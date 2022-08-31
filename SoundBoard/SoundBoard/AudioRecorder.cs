@@ -10,8 +10,12 @@ namespace SoundBoard
 {
     class AudioRecorder
     {
-        public WasapiLoopbackCapture MyWaveIn;
+        public WasapiLoopbackCapture LoopbackIn;
+        public WaveInEvent MicIn;
         public readonly double RecordTime;
+
+        public int InputDeviceNb { get; set; }
+        public int OutputDeviceNb { get; set; }
 
         private WaveOutEvent _wav = new WaveOutEvent();
         private bool _isFull = false;
@@ -26,9 +30,13 @@ namespace SoundBoard
         public AudioRecorder(double recordTime)
         {
             RecordTime = recordTime;
-            MyWaveIn = new WasapiLoopbackCapture();
-            MyWaveIn.DataAvailable += DataAvailable;
-            _buffer = new byte[(int)(MyWaveIn.WaveFormat.AverageBytesPerSecond * RecordTime)];
+            _wav.DeviceNumber = OutputDeviceNb;
+            LoopbackIn = new WasapiLoopbackCapture();
+            LoopbackIn.DataAvailable += DataAvailable;
+            MicIn = new WaveInEvent();
+            MicIn.DataAvailable += DataAvailable;
+            MicIn.DeviceNumber = InputDeviceNb;
+            _buffer = new byte[(int)(LoopbackIn.WaveFormat.AverageBytesPerSecond * RecordTime)];
         }
 
         /// <summary>
@@ -40,7 +48,7 @@ namespace SoundBoard
             {
                 try
                 {
-                    MyWaveIn.StartRecording();
+                    LoopbackIn.StartRecording();
                     Debug.WriteLine("Started Recoring!");
                 }
                 catch (InvalidOperationException)
@@ -57,7 +65,7 @@ namespace SoundBoard
         /// </summary>
         public void StopRecording()
         {
-            MyWaveIn.StopRecording();
+            LoopbackIn.StopRecording();
             _isRecording = false;
             Debug.WriteLine("Stopped Recording!");
         }
@@ -69,10 +77,11 @@ namespace SoundBoard
         {
             if(_wav.PlaybackState == PlaybackState.Stopped)
             {
-                var buff = new BufferedWaveProvider(MyWaveIn.WaveFormat);
+                var buff = new BufferedWaveProvider(LoopbackIn.WaveFormat);
                 var bytes = GetBytesToSave();
                 buff.AddSamples(bytes, 0, bytes.Length);
                 _wav.Init(buff);
+                _wav.DeviceNumber = 0;
                 _wav.Play();
             }
         }
@@ -91,7 +100,7 @@ namespace SoundBoard
         /// <param name="fileName"></param>
         public void Save(string fileName)
         {
-            var writer = new WaveFileWriter(fileName, MyWaveIn.WaveFormat);
+            var writer = new WaveFileWriter(fileName, LoopbackIn.WaveFormat);
             var buff = GetBytesToSave();
             writer.Write(buff, 0, buff.Length);
             writer.Flush();
@@ -128,6 +137,7 @@ namespace SoundBoard
                 Array.Copy(_buffer, 0, bytesToSave, byteCountToEnd, _pos);
             }
             return bytesToSave;
+
         }
 
         /// <summary>
@@ -141,7 +151,7 @@ namespace SoundBoard
             if (e.Exception != null) Debug.WriteLine(e.Exception.Message);
             if (_isRecording)
             {
-                MyWaveIn.StartRecording();
+                LoopbackIn.StartRecording();
             }
         }
     }
