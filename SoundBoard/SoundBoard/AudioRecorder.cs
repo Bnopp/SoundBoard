@@ -10,7 +10,7 @@ namespace SoundBoard
 {
     class AudioRecorder
     {
-        public WaveInEvent MyWaveIn;
+        public WasapiLoopbackCapture MyWaveIn;
         public readonly double RecordTime;
 
         private WaveOutEvent _wav = new WaveOutEvent();
@@ -26,7 +26,7 @@ namespace SoundBoard
         public AudioRecorder(double recordTime)
         {
             RecordTime = recordTime;
-            MyWaveIn = new WaveInEvent();
+            MyWaveIn = new WasapiLoopbackCapture();
             MyWaveIn.DataAvailable += DataAvailable;
             _buffer = new byte[(int)(MyWaveIn.WaveFormat.AverageBytesPerSecond * RecordTime)];
         }
@@ -41,6 +41,7 @@ namespace SoundBoard
                 try
                 {
                     MyWaveIn.StartRecording();
+                    Debug.WriteLine("Started Recoring!");
                 }
                 catch (InvalidOperationException)
                 {
@@ -58,6 +59,7 @@ namespace SoundBoard
         {
             MyWaveIn.StopRecording();
             _isRecording = false;
+            Debug.WriteLine("Stopped Recording!");
         }
 
         /// <summary>
@@ -94,6 +96,7 @@ namespace SoundBoard
             writer.Write(buff, 0, buff.Length);
             writer.Flush();
             writer.Dispose();
+            Debug.WriteLine("File Saved!");
         }
 
         private void DataAvailable(object sender, WaveInEventArgs e)
