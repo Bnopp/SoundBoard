@@ -1,0 +1,16 @@
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\SoundBoard_UI.exe.config
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\SoundBoard_UI.exe
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\SoundBoard_UI.pdb
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.csprojAssemblyReference.cache
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\MainWindow.g.cs
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\App.g.cs
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI_MarkupCompile.cache
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI_MarkupCompile.lref
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\MainWindow.baml
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.g.resources
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.Properties.Resources.resources
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.csproj.GenerateResource.cache
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.csproj.CoreCompileInputs.cache
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.exe
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.pdb
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\App.baml

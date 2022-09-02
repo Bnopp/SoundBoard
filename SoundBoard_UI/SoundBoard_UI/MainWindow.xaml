@@ -1,0 +1,46 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SoundBoard_UI"
+        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="SoundBoard_UI.MainWindow"
+        mc:Ignorable="d"
+        Title="SoundBoard" Height="450" Width="800"
+        Background="#131d25">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Margin="20">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Margin" Value="0, 10, 0, 10"/>
+                    <Setter Property="Foreground" Value="#ffffff"/>
+                </Style>
+                <Style TargetType="{x:Type ComboBoxItem}">
+                    <Setter Property="Foreground" Value="#e8ecf1"/>
+                </Style>
+            </StackPanel.Resources>
+            
+            <TextBlock>Playback Device</TextBlock>
+
+            <ComboBox Height="25" Style="{StaticResource ComboBoxRoundedCornersStyle}">
+                <ComboBoxItem Content="Default Device"/>
+                <ComboBoxItem Content="Speakers"/>
+                <ComboBoxItem Content="Headphones"/>
+                <ComboBoxItem Content="Monitor"/>
+            </ComboBox>
+
+            <TextBlock>Recording Device</TextBlock>
+
+            <ComboBox Height="25" Style="{StaticResource ComboBoxRoundedCornersStyle}">
+                <ComboBoxItem Content="Default Device"/>
+                <ComboBoxItem Content="Microphone"/>
+                <ComboBoxItem Content="Headset"/>
+            </ComboBox>
+        </StackPanel>
+    </Grid>
+</Window>

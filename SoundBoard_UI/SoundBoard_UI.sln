@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundBoard_UI", "SoundBoard_UI\SoundBoard_UI.csproj", "{941649A2-8AE0-4FA2-822B-A95A22CED192}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{941649A2-8AE0-4FA2-822B-A95A22CED192}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{941649A2-8AE0-4FA2-822B-A95A22CED192}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{941649A2-8AE0-4FA2-822B-A95A22CED192}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{941649A2-8AE0-4FA2-822B-A95A22CED192}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4816ADA5-80E2-4C80-865C-63FF22F0C171}
+	EndGlobalSection
+EndGlobal
