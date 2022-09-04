@@ -27,19 +27,19 @@
             
             <TextBlock>Playback Device</TextBlock>
 
-            <ComboBox Height="25" Style="{StaticResource ComboBoxRoundedCornersStyle}">
-                <ComboBoxItem Content="Default Device"/>
+            <ComboBox x:Name="cbPlayback" Height="25" Style="{StaticResource ComboBoxRoundedCornersStyle}">
+                <!--<ComboBoxItem Content="Default Device"/>
                 <ComboBoxItem Content="Speakers"/>
                 <ComboBoxItem Content="Headphones"/>
-                <ComboBoxItem Content="Monitor"/>
+                <ComboBoxItem Content="Monitor"/>-->
             </ComboBox>
 
             <TextBlock>Recording Device</TextBlock>
 
-            <ComboBox Height="25" Style="{StaticResource ComboBoxRoundedCornersStyle}">
-                <ComboBoxItem Content="Default Device"/>
+            <ComboBox x:Name="cbRecording" Height="25" Style="{StaticResource ComboBoxRoundedCornersStyle}">
+                <!--<ComboBoxItem Content="Default Device"/>
                 <ComboBoxItem Content="Microphone"/>
-                <ComboBoxItem Content="Headset"/>
+                <ComboBoxItem Content="Headset"/>-->
             </ComboBox>
         </StackPanel>
     </Grid>
