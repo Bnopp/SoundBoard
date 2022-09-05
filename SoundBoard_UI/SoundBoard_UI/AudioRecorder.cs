@@ -14,6 +14,7 @@ namespace SoundBoard_UI
         public WaveInEvent MicIn;
         public readonly double RecordTime;
 
+        public WaveBuffer wBuffer { get; set; }
         public int InputDeviceNb { get; set; }
         public int OutputDeviceNb { get; set; }
 
@@ -110,6 +111,7 @@ namespace SoundBoard_UI
 
         private void DataAvailable(object sender, WaveInEventArgs e)
         {
+            wBuffer = new WaveBuffer(e.Buffer);
             for (int i = 0; i < e.BytesRecorded; i++)
             {
                 // save the data

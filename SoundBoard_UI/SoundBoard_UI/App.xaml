@@ -22,7 +22,7 @@
         <Style x:Key="ComboBoxRoundedCornersStyle" TargetType="{x:Type ComboBox}">
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Foreground" Value="#e8ecf1"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ComboBox}">
@@ -71,6 +71,35 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+        <Style TargetType="Button" x:Key="ClearButton">
+            <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Foreground" Value="#e8ecf1"/>
+            
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Border.Background}"
+                                CornerRadius="{TemplateBinding Border.CornerRadius}">
+                            <ContentPresenter x:Name="contentPresenter"
+                                      ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                      Content="{TemplateBinding Content}" 
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      Margin="{TemplateBinding Padding}" 
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Button" x:Key="TitleButton" BasedOn="{StaticResource ClearButton}">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        <Style TargetType="Button" x:Key="MainButton" BasedOn="{StaticResource ClearButton}">
+            <Setter Property="Background" Value="#4854ac"/>
+            <Setter Property="Border.CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="10, 0, 10, 0"/>
         </Style>
     </Application.Resources>
 </Application>

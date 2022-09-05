@@ -23,93 +23,47 @@ namespace SoundBoard_UI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static Random rand = new Random();
+        private AudioRecorder recorder;
 
-        private WaveBuffer buffer;
-
-        private int M = 6;
+        private int M = 7;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            recorder = new AudioRecorder(5);
             CompositionTarget.Rendering += CompositionTarget_Rendering;
-            //LoadAudioDevices();
 
-            // start audio capture
-            var capture = new WasapiLoopbackCapture();
-
-            capture.DataAvailable += DataAvailable;
-
-            capture.RecordingStopped += (s, a) =>
-            {
-                capture.Dispose();
-            };
-
-            capture.StartRecording();
-        }
-
-        public void DataAvailable(object sender, WaveInEventArgs e)
-        {
-            buffer = new WaveBuffer(e.Buffer); // save the buffer in the class variable
+            LoadAudioDevices();
         }
 
         void CompositionTarget_Rendering(object sender, System.EventArgs e)
         {
-            if (buffer == null)
-            {
-                Debug.WriteLine("No buffer available");
-                return;
-            }
+            if (recorder.wBuffer == null) return;
 
-            testCanvas.Children.Clear();
-
-            /*double newLeft = rand.Next(0, 640);
-            double newTop = rand.Next(0, 480);
-
-            theEllipse.SetValue(Canvas.LeftProperty, newLeft);
-            theEllipse.SetValue(Canvas.TopProperty, newTop);*/
-
-            int len = buffer.FloatBuffer.Length / 8;
+            int len = recorder.wBuffer.FloatBuffer.Length / 8;
 
             // fft
             NAudio.Dsp.Complex[] values = new NAudio.Dsp.Complex[len];
             for (int i = 0; i < len; i++)
             {
                 values[i].Y = 0;
-                values[i].X = buffer.FloatBuffer[i];
+                values[i].X = recorder.wBuffer.FloatBuffer[i];
             }
             NAudio.Dsp.FastFourierTransform.FFT(true, M, values);
 
-            float size = (float)this.Width / ((float)Math.Pow(2, M) / 2);
+            float size = (float)cVisualiser.ActualWidth / ((float)Math.Pow(2, M) / 2);
+
+            cVisualiser.Children.Clear();
 
             for (int i = 1; i < Math.Pow(2, M) / 2; i++)
             {
-                //Graphics.Print(i.ToString() + ": " + values[i].X.ToString("N2") + " i " + (values[i].Y + 0.50f).ToString("N2"), 0, (i + 1) * 16);
-                //Graphics.Rectangle(DrawMode.Fill, (i - 1) * size, WindowHeight / 2, size, -Math.Abs(values[i].X) * (WindowHeight / 2) * 10);
-
-                Debug.WriteLine(Math.Abs(values[i].X) * (this.Height / 2) * 10);
-                Rectangle rect = new Rectangle { Fill = new SolidColorBrush(Color.FromRgb(253, 133, 74)), Width = size, Height = Math.Abs(values[i].X) * (this.Height / 2) * 10 };
+                Rectangle rect = new Rectangle { Fill = new SolidColorBrush(Color.FromRgb(253, 133, 74)), Width = size, Height = Math.Abs(values[i].X) * (cVisualiser.ActualHeight / 2) * 10 * 2};
                 rect.SetValue(Canvas.LeftProperty, Convert.ToDouble((i - 1) * size));
                 rect.SetValue(Canvas.TopProperty, this.Height / 2);
                 ScaleTransform stInvert = new ScaleTransform(1, -1);
                 rect.RenderTransform = stInvert;
-                testCanvas.Children.Add(rect);
-            }
-
-            float size = (float)this.Width / ((float)Math.Pow(2, M) / 2);
-
-            for (int i = 1; i < Math.Pow(2, M) / 2; i++)
-            {
-                //Graphics.Print(i.ToString() + ": " + values[i].X.ToString("N2") + " i " + (values[i].Y + 0.50f).ToString("N2"), 0, (i + 1) * 16);
-                //Graphics.Rectangle(DrawMode.Fill, (i - 1) * size, WindowHeight / 2, size, -Math.Abs(values[i].X) * (WindowHeight / 2) * 10);
-
-                Debug.WriteLine(Math.Abs(values[i].X) * (this.Height / 2) * 10);
-                Rectangle rect = new Rectangle { Fill = new SolidColorBrush(Color.FromRgb(253, 133, 74)), Width = size, Height = Math.Abs(values[i].X) * (this.Height / 2) * 10 };
-                rect.SetValue(Canvas.LeftProperty, Convert.ToDouble((i - 1) * size));
-                rect.SetValue(Canvas.TopProperty, this.Height / 2);
-                ScaleTransform stInvert = new ScaleTransform(1, -1);
-                rect.RenderTransform = stInvert;
-                testCanvas.Children.Add(rect);
+                cVisualiser.Children.Add(rect);
             }
         }
 
@@ -182,6 +136,46 @@ namespace SoundBoard_UI
             }
 
             return retVal;
+        }
+
+        /// <summary>
+        /// TitleBar_MouseDown - Drag if single-click, resize if double-click
+        /// </summary>
+        private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left) Application.Current.MainWindow.DragMove();
+        }
+
+        /// <summary>
+        /// CloseButton_Clicked
+        /// </summary>
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            recorder.StopRecording();
+            Application.Current.Shutdown();
+        }
+
+        /// <summary>
+        /// Minimized Button_Clicked
+        /// </summary>
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void btnRecordingStart_Click(object sender, RoutedEventArgs e)
+        {
+            recorder.StartRecording();
+        }
+
+        private void btnRecordingStop_Click(object sender, RoutedEventArgs e)
+        {
+            recorder.StopRecording();
+        }
+
+        private void btnRecordingSave_Click(object sender, RoutedEventArgs e)
+        {
+            recorder.Save("test.wav");
         }
     }
 }
