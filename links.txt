@@ -1,4 +1,4 @@
 color theme explained - https://material.io/design/color/the-color-system.html#color-theme-creation
 used theme - https://dribbble.com/shots/13955610-SOM-Elements/attachments/5567610?mode=media
 wpf tutorial - https://wpf-tutorial.com
-
+Naudio - https://github.com/naudio/NAudio.WaveFormRenderer

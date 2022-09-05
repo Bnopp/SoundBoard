@@ -14,7 +14,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Margin="20">
+        <StackPanel x:Name="spContainerLeft" Margin="20">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type TextBlock}">
                     <Setter Property="Margin" Value="0, 10, 0, 10"/>
@@ -41,6 +41,8 @@
                 <ComboBoxItem Content="Microphone"/>
                 <ComboBoxItem Content="Headset"/>-->
             </ComboBox>
+
+            <Canvas x:Name="testCanvas"/>
         </StackPanel>
     </Grid>
 </Window>
