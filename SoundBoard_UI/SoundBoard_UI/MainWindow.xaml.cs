@@ -27,6 +27,7 @@ namespace SoundBoard_UI
 
         private int M = 7;
 
+        /* The constructor of the MainWindow class. */
         public MainWindow()
         {
             InitializeComponent();
@@ -37,13 +38,21 @@ namespace SoundBoard_UI
             LoadAudioDevices();
         }
 
+        /// <summary>
+        /// It takes the audio data from the microphone, converts it to a complex number, performs a
+        /// Fast Fourier Transform on it, and then draws a rectangle for each frequency
+        /// </summary>
+        /// <param name="sender">The object that raised the event.</param>
+        /// <param name="e">The event arguments</param>
+        /// <returns>
+        /// The FFT returns a complex number.
+        /// </returns>
         void CompositionTarget_Rendering(object sender, System.EventArgs e)
         {
             if (recorder.wBuffer == null) return;
 
             int len = recorder.wBuffer.FloatBuffer.Length / 8;
 
-            // fft
             NAudio.Dsp.Complex[] values = new NAudio.Dsp.Complex[len];
             for (int i = 0; i < len; i++)
             {
@@ -67,19 +76,12 @@ namespace SoundBoard_UI
             }
         }
 
+        /// <summary>
+        /// It loads all the audio devices on the computer into two combo boxes
+        /// </summary>
         public void LoadAudioDevices()
         {
-            /*for (int deviceId = 0; deviceId < WaveOut.DeviceCount; deviceId++)
-            {
-                var deviceInfo = WaveOut.GetCapabilities(deviceId);
-                cbPlayback.Items.Add(deviceInfo.ProductName);
-            }
-
-            for (int deviceId = 0; deviceId < WaveIn.DeviceCount; deviceId++)
-            {
-                var deviceInfo = WaveIn.GetCapabilities(deviceId);
-                cbRecording.Items.Add(deviceInfo.ProductName);
-            }*/
+            var watch = Stopwatch.StartNew();
 
             foreach (KeyValuePair<string, MMDevice> device in GetInputAudioDevices())
             {
@@ -92,49 +94,53 @@ namespace SoundBoard_UI
                 //Debug.WriteLine("Output Name: {0}, State: {1}", device.Key, device.Value.State);
                 cbPlayback.Items.Add(device.Key);
             }
+
+            watch.Stop();
+            Debug.WriteLine("Loaded Audio Devices");
+            Debug.WriteLine($"Execution time: {watch.ElapsedMilliseconds} ms");
         }
 
+        /// <summary>
+        /// It returns a dictionary of all the active input audio devices on the system
+        /// </summary>
+        /// <returns>
+        /// A dictionary of strings and MMDevices.
+        /// </returns>
         public Dictionary<string, MMDevice> GetInputAudioDevices()
         {
             Dictionary<string, MMDevice> retVal = new Dictionary<string, MMDevice>();
             MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
-            int waveInDevices = WaveIn.DeviceCount;
-            for (int waveInDevice = 0; waveInDevice < waveInDevices; waveInDevice++)
+            //cycle through all audio devices
+            for (int i = 0; i < WaveIn.DeviceCount; i++)
             {
-                WaveInCapabilities deviceInfo = WaveIn.GetCapabilities(waveInDevice);
-                foreach (MMDevice device in enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.All))
-                {
-                    if (device.FriendlyName.StartsWith(deviceInfo.ProductName))
-                    {
-                        retVal.Add(device.FriendlyName, device);
-                        break;
-                    }
-                }
+                MMDevice temp = enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active)[i];
+                retVal.Add(temp.FriendlyName, temp);
             }
-
+            //clean up
+            enumerator.Dispose();
             return retVal;
         }
 
+        /// <summary>
+        /// It returns a dictionary of all the output audio devices on the system
+        /// </summary>
+        /// <returns>
+        /// A Dictionary of MMDevice objects.
+        /// </returns>
         public Dictionary<string, MMDevice> GetOutputAudioDevices()
         {
-            Debug.WriteLine("method started");
             Dictionary<string, MMDevice> retVal = new Dictionary<string, MMDevice>();
             MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
-            int waveOutDevices = WaveOut.DeviceCount;
-            for (int waveOutDevice = 0; waveOutDevice < waveOutDevices; waveOutDevice++)
-            {
-                WaveOutCapabilities deviceInfo = WaveOut.GetCapabilities(waveOutDevice);
-                //Debug.WriteLine(deviceInfo.ProductName);
-                foreach (MMDevice device in enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.All))
-                {
-                    if (device.FriendlyName.StartsWith(deviceInfo.ProductName))
-                    {
-                        retVal.Add(device.FriendlyName, device);
-                        break;
-                    }
-                }
-            }
 
+            //cyckle trough all audio devices
+            for (int i = 0; i < WaveOut.DeviceCount; i++)
+            {
+                MMDevice temp = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active)[i];
+                retVal.Add(temp.FriendlyName, temp);
+            }
+                
+            //clean up
+            enumerator.Dispose();
             return retVal;
         }
 
