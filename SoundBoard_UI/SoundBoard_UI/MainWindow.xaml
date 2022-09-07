@@ -16,7 +16,8 @@
             <Button x:Name="CloseButton"
                     Style="{StaticResource TitleButton}"
                     Click="CloseButton_Click"
-                    DockPanel.Dock="Right">
+                    DockPanel.Dock="Right"
+                    Margin="0,0,2,0">
                 <Ellipse x:Name="eClose" Width="10" Height="10" Fill="#f54e4e"/>
             </Button>
             <Button x:Name="MinButton"
@@ -26,7 +27,7 @@
                 <Ellipse x:Name="eMinimize" Width="10" Height="10" Fill="#f5c34e"/>
             </Button>
 
-            <TextBlock HorizontalAlignment="Center" Foreground="White">SoundBoard</TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="20,0,0,0">SoundBoard</TextBlock>
         </DockPanel>
         <Grid >
             <Grid.ColumnDefinitions>
@@ -62,8 +63,12 @@
                     <Button x:Name="btnRecordingStop" Style="{StaticResource MainButton}" Click="btnRecordingStop_Click" Content="Stop" Margin="10,0,10,0"/>
                     <Button x:Name="btnRecordingSave" Style="{StaticResource MainButton}" Click="btnRecordingSave_Click" Content="Save" Margin="10,0,0,0"/>
                 </StackPanel>
-                
-                <Canvas x:Name="cVisualiser" Height="100"/>
+
+                <Slider IsSnapToTickEnabled="True" TickFrequency="10" Minimum="0" Maximum="100"/>
+
+                <Border BorderBrush="Red" BorderThickness="1" Margin="0,10,0,0">
+                    <Canvas x:Name="cVisualiser" Height="100"/>
+                </Border>
             </StackPanel>
         </Grid>
     </DockPanel>

@@ -119,6 +119,7 @@ namespace SoundBoard_UI
                 // move the current position (advances by 1 OR resets to zero if the length of the buffer was reached)
                 _pos = (_pos + 1) % _buffer.Length;
                 // flag if the buffer is full (will only set it from false to true the first time it reaches the full length of the buffer)
+                /* Setting the _isFull flag to true if the _pos variable is equal to 0. */
                 _isFull |= (_pos == 0);
             }
         }
