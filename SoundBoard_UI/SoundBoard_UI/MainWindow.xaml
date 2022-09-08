@@ -64,9 +64,9 @@
                     <Button x:Name="btnRecordingSave" Style="{StaticResource MainButton}" Click="btnRecordingSave_Click" Content="Save" Margin="10,0,0,0"/>
                 </StackPanel>
 
-                <Slider IsSnapToTickEnabled="True" TickFrequency="10" Minimum="0" Maximum="100"/>
+                <Slider IsSnapToTickEnabled="True" TickFrequency="10" Minimum="0" Maximum="100" Margin="0,10,0,0" Value="50"/>
 
-                <Border BorderBrush="Red" BorderThickness="1" Margin="0,10,0,0">
+                <Border Background="#292f3a" BorderBrush="Transparent" CornerRadius="5" BorderThickness="1" Margin="0,10,0,0">
                     <Canvas x:Name="cVisualiser" Height="100"/>
                 </Border>
             </StackPanel>

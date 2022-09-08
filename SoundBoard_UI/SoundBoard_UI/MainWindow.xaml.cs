@@ -67,7 +67,7 @@ namespace SoundBoard_UI
 
             for (int i = 1; i < Math.Pow(2, M) / 2; i++)
             {
-                Rectangle rect = new Rectangle { Fill = new SolidColorBrush(Color.FromRgb(253, 133, 74)), Width = size, Height = Math.Abs(values[i].X) * (cVisualiser.ActualHeight / 2) * 10 * 2};
+                Rectangle rect = new Rectangle { Fill = new SolidColorBrush(Color.FromRgb(253, 133, 74)), Width = size, Height = Math.Abs(values[i].X) * (cVisualiser.ActualHeight / 2) * 5, RadiusY = 5, RadiusX = 5};
                 rect.SetValue(Canvas.LeftProperty, Convert.ToDouble((i - 1) * size));
                 rect.SetValue(Canvas.TopProperty, cVisualiser.Height);
                 ScaleTransform stInvert = new ScaleTransform(1, -1);
