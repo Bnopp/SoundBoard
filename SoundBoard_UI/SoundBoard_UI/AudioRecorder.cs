@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SoundBoard_UI
 {
@@ -23,6 +25,7 @@ namespace SoundBoard_UI
         private int _pos = 0;
         private byte[] _buffer;
         private bool _isRecording = false;
+        private string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Soundboard");
 
         /// <summary>
         /// Creates a new recorder with a buffer
@@ -101,11 +104,28 @@ namespace SoundBoard_UI
         /// <param name="fileName"></param>
         public void Save(string fileName)
         {
-            var writer = new WaveFileWriter(fileName, LoopbackIn.WaveFormat);
+            string pathString = "NewRecording_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".wav";
+            pathString = System.IO.Path.Combine(savePath, pathString);
+            if (!Directory.Exists(savePath))
+            {
+                Directory.CreateDirectory(savePath);
+            }
+            else
+            {
+                Debug.WriteLine("Directory exists");
+            }
+
+            Debug.WriteLine(pathString);
+            var writer = new WaveFileWriter(pathString, LoopbackIn.WaveFormat);
             var buff = GetBytesToSave();
             writer.Write(buff, 0, buff.Length);
             writer.Flush();
             writer.Dispose();
+
+            MainWindow window = Application.Current.Windows[0] as MainWindow;
+            window.lsSounds.Add(new Sound() { Name = Path.GetFileNameWithoutExtension(pathString), Shortcut = "none", Path = pathString});
+            window.dgSounds.Items.Refresh();
+
             Debug.WriteLine("File Saved!");
         }
 

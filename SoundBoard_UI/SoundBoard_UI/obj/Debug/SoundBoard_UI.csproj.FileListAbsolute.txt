@@ -61,3 +61,4 @@ C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Deb
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\System.Security.Principal.Windows.xml
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.csproj.AssemblyReference.cache
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.csproj.CopyComplete
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.csproj.SuggestedBindingRedirects.cache

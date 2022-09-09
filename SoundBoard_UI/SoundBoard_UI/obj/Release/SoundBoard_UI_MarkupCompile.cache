@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\
+C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Release\
 SoundBoard_UI
 none
 false
-DEBUG;TRACE
+TRACE
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\App.xaml
-1219584333
+11151548125
 
-735171216
-26225623212
+71614297793
+26489699974
 MainWindow.xaml;
 
-False
+True
 
