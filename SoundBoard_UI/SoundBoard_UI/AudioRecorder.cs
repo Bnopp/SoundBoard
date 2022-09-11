@@ -14,7 +14,7 @@ namespace SoundBoard_UI
     {
         public WasapiLoopbackCapture LoopbackIn;
         public WaveInEvent MicIn;
-        public readonly double RecordTime;
+        public double RecordTime;
 
         public WaveBuffer wBuffer { get; set; }
         public int InputDeviceNb { get; set; }

@@ -26,6 +26,7 @@ namespace SoundBoard_UI
     {
         public List<Sound> lsSounds;
         private AudioRecorder recorder;
+        private string saveDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Soundboard");
 
         private int M = 7;
 
@@ -36,7 +37,12 @@ namespace SoundBoard_UI
 
             lsSounds = new List<Sound>();
 
-            string[] Files = System.IO.Directory.GetFiles(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Soundboard"));
+            if (!Directory.Exists(saveDir))
+            {
+                Directory.CreateDirectory(saveDir);
+            }
+
+            string[] Files = System.IO.Directory.GetFiles(saveDir);
 
             for (int i = 0; i < Files.Length; i++)
             {
@@ -45,11 +51,8 @@ namespace SoundBoard_UI
 
             dgSounds.ItemsSource = lsSounds;
             Debug.WriteLine(dgSounds.Columns.Count);
-            //dgSounds.Columns[0].Width = 50;
-            //Debug.WriteLine(dgSounds.ColumnFromDisplayIndex(0).ActualWidth);
-            //Debug.WriteLine(dgSounds.Items.Count);
 
-            recorder = new AudioRecorder(5);
+            recorder = new AudioRecorder(10);
             CompositionTarget.Rendering += CompositionTarget_Rendering;
 
             LoadAudioDevices();
@@ -220,6 +223,11 @@ namespace SoundBoard_UI
             waveOut.Init(reader);
             waveOut.Play();
             Debug.WriteLine("Playing " + dgSounds.SelectedIndex);
+        }
+
+        private void sTimeToSave_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (recorder!=null) recorder.RecordTime = (int)sTimeToSave.Value;
         }
     }
 }
