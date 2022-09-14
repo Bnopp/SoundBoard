@@ -9,7 +9,9 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Title="SoundBoard" Height="150" Width="350"
-        Background="#131d25">
+        Background="#131d25"
+        KeyDown="Window_KeyDown"
+        TextInput="Window_TextInput">
     <DockPanel x:Name="RootWindow">
         <DockPanel x:Name="TitleBar" DockPanel.Dock="Top" Background="#282f3a"  MouseDown="TitleBar_MouseDown">
             <Button x:Name="CloseButton"

@@ -72,7 +72,7 @@
             </StackPanel>
 
             <StackPanel x:Name="spContainerRight" Grid.Column="1" Margin="20">
-                <DataGrid x:Name="dgSounds" IsReadOnly="False" Height="285"
+                <DataGrid x:Name="dgSounds" IsReadOnly="True" Height="285"
                       CanUserResizeColumns="False" 
                       CanUserResizeRows="False" 
                       CanUserReorderColumns="False" 
@@ -83,8 +83,8 @@
                       HorizontalScrollBarVisibility="Disabled"
                       VerticalScrollBarVisibility="Visible">
                     <DataGrid.Resources>
-                        <Style TargetType="DataGridRow">
-                            <EventSetter Event="MouseDoubleClick" Handler="RowDouble_Click"/>
+                        <Style TargetType="DataGrid">
+                            <EventSetter Event="MouseDoubleClick" Handler="CellDouble_Click"/>
                         </Style>
                     </DataGrid.Resources>
                 </DataGrid>

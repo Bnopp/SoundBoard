@@ -40,10 +40,6 @@ C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug
 C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\NAudio.WinMM.dll
 C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\System.Security.AccessControl.dll
 C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\System.Security.Principal.Windows.dll
-C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\Microsoft.Win32.Registry.xml
-C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\NAudio.xml
-C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\System.Security.AccessControl.xml
-C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\System.Security.Principal.Windows.xml
 C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.csproj.CopyComplete
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\Microsoft.Win32.Registry.dll
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\NAudio.Asio.dll
@@ -68,3 +64,13 @@ C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Deb
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SelectHotKeyWindow.baml
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.csproj.SuggestedBindingRedirects.cache
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.exe.config
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\Microsoft.Toolkit.Uwp.Notifications.dll
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\Microsoft.Toolkit.Uwp.Notifications.pdb
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\NHotkey.dll
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\NHotkey.pdb
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\NHotkey.Wpf.dll
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\NHotkey.Wpf.pdb
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\System.ValueTuple.dll
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.exe.config
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SelectHotKeyWindow.g.cs
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SelectHotKeyWindow.baml
