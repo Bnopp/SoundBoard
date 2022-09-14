@@ -27,6 +27,8 @@ namespace SoundBoard_UI
         private bool _isRecording = false;
         private string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Soundboard");
 
+        public bool IsRecording { get { return _isRecording; } }
+
         /// <summary>
         /// Creates a new recorder with a buffer
         /// </summary>
@@ -101,8 +103,7 @@ namespace SoundBoard_UI
         /// <summary>
         /// Save to disk
         /// </summary>
-        /// <param name="fileName"></param>
-        public void Save(string fileName)
+        public void Save()
         {
             string pathString = "NewRecording_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".wav";
             pathString = System.IO.Path.Combine(savePath, pathString);

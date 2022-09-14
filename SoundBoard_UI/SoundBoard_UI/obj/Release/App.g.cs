@@ -9,6 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using NHotkey.Wpf;
 using SoundBoard_UI;
 using System;
 using System.Diagnostics;
