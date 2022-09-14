@@ -19,6 +19,7 @@ using System.IO;
 using NHotkey.Wpf;
 using NHotkey;
 using Microsoft.Toolkit.Uwp.Notifications;
+using System.ComponentModel;
 
 namespace SoundBoard_UI
 {
@@ -53,6 +54,7 @@ namespace SoundBoard_UI
             }
 
             dgSounds.ItemsSource = lsSounds;
+            dgSounds.CanUserAddRows = false;
 
             recorder = new AudioRecorder(10);
             CompositionTarget.Rendering += CompositionTarget_Rendering;
@@ -261,12 +263,15 @@ namespace SoundBoard_UI
 
         private void btnSoundPlay_Click(object sender, RoutedEventArgs e)
         {
-            var reader = new WaveFileReader(System.IO.Path.GetFullPath(lsSounds[dgSounds.SelectedIndex].Path));
-            var waveOut = new WaveOut();
-            waveOut.DeviceNumber = cbPlayback.SelectedIndex;
-            waveOut.Init(reader);
-            waveOut.Play();
-            Debug.WriteLine("Playing " + dgSounds.SelectedIndex);
+            if (dgSounds.Items.Count > 0)
+            {
+                var reader = new WaveFileReader(System.IO.Path.GetFullPath(lsSounds[dgSounds.SelectedIndex].Path));
+                var waveOut = new WaveOut();
+                waveOut.DeviceNumber = cbPlayback.SelectedIndex;
+                waveOut.Init(reader);
+                waveOut.Play();
+                Debug.WriteLine("Playing " + dgSounds.SelectedIndex);
+            }
         }
 
         private void sTimeToSave_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
