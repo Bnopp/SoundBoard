@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using Microsoft.Toolkit.Uwp.Notifications;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
-using System.IO;
-using NHotkey.Wpf;
 using NHotkey;
-using Microsoft.Toolkit.Uwp.Notifications;
-using System.ComponentModel;
+using NHotkey.Wpf;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace SoundBoard_UI
 {
@@ -28,10 +21,15 @@ namespace SoundBoard_UI
     /// </summary>
     public partial class MainWindow : Window
     {
+        public const string UserSettingsFilename = @"\settings.xml";
+        public string _DefaultSettingspath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Soundboard";
+
+        public Settings Settings { get; private set; }
+
         public List<Sound> lsSounds;
 
         private AudioRecorder recorder;
-        private string saveDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Soundboard");
+        private string saveDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"\Soundboard\Sounds");
 
         private int M = 7;
 
@@ -39,6 +37,20 @@ namespace SoundBoard_UI
         public MainWindow()
         {
             InitializeComponent();
+
+            // if default settings exist
+            this.Settings = new Settings();
+            
+
+            if (!File.Exists(_DefaultSettingspath + UserSettingsFilename))
+            {
+                File.Create(_DefaultSettingspath + UserSettingsFilename);
+                Debug.WriteLine(_DefaultSettingspath + UserSettingsFilename);
+            }
+
+            //this.Settings = Settings.Read(_DefaultSettingspath + UserSettingsFilename);
+            this.Settings.HotKeys = new List<Key> { Key.A, Key.LeftCtrl };
+            this.Settings.Save(_DefaultSettingspath + UserSettingsFilename);
 
             lsSounds = new List<Sound>();
 
@@ -58,6 +70,7 @@ namespace SoundBoard_UI
             dgSounds.CanUserAddRows = false;
 
             recorder = new AudioRecorder(10);
+            recorder.SavePath = saveDir;
             CompositionTarget.Rendering += CompositionTarget_Rendering;
 
             LoadAudioDevices();
@@ -65,6 +78,11 @@ namespace SoundBoard_UI
             HotkeyManager.Current.AddOrReplace("Starter", Key.D1, ModifierKeys.Control | ModifierKeys.Alt, StartOrStop);
         }
 
+        /// <summary>
+        /// Start/Stop recording using a HotKey Shortcut
+        /// </summary>
+        /// <param name="Sender"></param>
+        /// <param name="HotkeyEventArgs"></param>
         private void StartOrStop(object Sender, HotkeyEventArgs e)
         {
             string action = "";
@@ -84,7 +102,7 @@ namespace SoundBoard_UI
                 .AddButton(new ToastButton()
                 .SetContent("Ok")
                 .SetBackgroundActivation())
-                .Show(toast => 
+                .Show(toast =>
                 {
                     toast.ExpirationTime = DateTime.Now.AddSeconds(2);
                 });
@@ -119,7 +137,7 @@ namespace SoundBoard_UI
 
             for (int i = 1; i < Math.Pow(2, M) / 2; i++)
             {
-                Rectangle rect = new Rectangle { Fill = new SolidColorBrush(Color.FromRgb(253, 133, 74)), Width = size, Height = Math.Abs(values[i].X) * (cVisualiser.ActualHeight / 2) * 5, RadiusY = 5, RadiusX = 5};
+                Rectangle rect = new Rectangle { Fill = new SolidColorBrush(Color.FromRgb(253, 133, 74)), Width = size, Height = Math.Abs(values[i].X) * (cVisualiser.ActualHeight / 2) * 5, RadiusY = 5, RadiusX = 5 };
                 rect.SetValue(Canvas.LeftProperty, Convert.ToDouble((i - 1) * size));
                 rect.SetValue(Canvas.TopProperty, cVisualiser.Height);
                 ScaleTransform stInvert = new ScaleTransform(1, -1);
@@ -193,7 +211,7 @@ namespace SoundBoard_UI
                 MMDevice temp = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active)[i];
                 retVal.Add(temp.FriendlyName, temp);
             }
-                
+
             //clean up
             enumerator.Dispose();
             return retVal;
@@ -224,6 +242,9 @@ namespace SoundBoard_UI
             this.WindowState = WindowState.Minimized;
         }
 
+        /// <summary>
+        /// Start Recording Button_Clicked
+        /// </summary>
         private void btnRecordingStart_Click(object sender, RoutedEventArgs e)
         {
             if (!recorder.IsRecording)
@@ -238,35 +259,43 @@ namespace SoundBoard_UI
             }
         }
 
-        private void btnRecordingStop_Click(object sender, RoutedEventArgs e)
-        {
-            recorder.StopRecording();
-        }
-
+        /// <summary>
+        /// Save Button_Clicked
+        /// </summary>
         private void btnRecordingSave_Click(object sender, RoutedEventArgs e)
         {
             recorder.Save();
         }
 
+        /// <summary>
+        /// Cell DoubleMouseClick
+        /// </summary>
         private void CellDouble_Click(object sender, MouseEventArgs e)
         {
             var grid = sender as DataGrid;
             var cellIndex = grid.SelectedIndex;
             var tmpSound = (grid.SelectedItem as Sound);
-            //(grid.SelectedItem as Sound).Shortcut = "test";
+
             DataGridCell dgc = grid.SelectedItem as DataGridCell;
 
             SelectHotKeyWindow hotKeyWindow = new SelectHotKeyWindow();
             hotKeyWindow.ShowDialog();
-            tmpSound.Shortcut = "";
+
+
             Debug.WriteLine("Keys:");
+
             int count = 0;
+            tmpSound.Shortcut = "";
             List<Key> modifierKeys = new List<Key>();
             Key normalKey = Key.None;
-            foreach ( Key key in hotKeyWindow.HotKeys)
+
+            foreach (Key key in hotKeyWindow.HotKeys)
             {
                 Debug.WriteLine(key.ToString());
 
+                /* Checking if the key pressed is a modifier key (Ctrl, Alt, Shift) and if it is, it
+                adds it to the list of modifier keys. If it is not a modifier key, it sets it to the
+                normalKey variable. */
                 switch (key)
                 {
                     case Key.LeftCtrl:
@@ -306,6 +335,9 @@ namespace SoundBoard_UI
             grid.Items.Refresh();
         }
 
+        /// <summary>
+        /// Sets the columns settings for the data grid after the columns are auto generated
+        /// </summary>
         private void dgSounds_AutoGeneratedColumns(object sender, EventArgs e)
         {
             dgSounds.Columns[0].Width = 208;
@@ -313,6 +345,9 @@ namespace SoundBoard_UI
             dgSounds.Columns.Remove(dgSounds.Columns[2]);
         }
 
+        /// <summary>
+        /// Plays the sound file that is selected in the listbox
+        /// </summary>
         private void btnSoundPlay_Click(object sender, RoutedEventArgs e)
         {
             if (dgSounds.Items.Count > 0)
@@ -326,6 +361,9 @@ namespace SoundBoard_UI
             }
         }
 
+        /// <summary>
+        /// Plays the sound assigned to the shortcut
+        /// </summary>
         private void PlaySound(object Sender, HotkeyEventArgs e)
         {
             if (dgSounds.Items.Count > 0)
@@ -339,9 +377,12 @@ namespace SoundBoard_UI
             }
         }
 
+        /// <summary>
+        /// Changes recording time depending on the slider value
+        /// </summary>
         private void sTimeToSave_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (recorder!=null) recorder.RecordTime = (int)sTimeToSave.Value;
+            if (recorder != null) recorder.RecordTime = (int)sTimeToSave.Value;
         }
     }
 }

@@ -62,7 +62,6 @@ C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Deb
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\Microsoft.Toolkit.Uwp.Notifications.pdb
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SelectHotKeyWindow.g.cs
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SelectHotKeyWindow.baml
-C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.csproj.SuggestedBindingRedirects.cache
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.exe.config
 C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\Microsoft.Toolkit.Uwp.Notifications.dll
 C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\Microsoft.Toolkit.Uwp.Notifications.pdb

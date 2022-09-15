@@ -1,17 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace SoundBoard_UI
 {
@@ -45,30 +35,26 @@ namespace SoundBoard_UI
             if (e.ChangedButton == MouseButton.Left)
             {
                 this.DragMove();
-            } 
+            }
         }
 
+        /// <summary>
+        /// Called whenever a key is pressed and saves it
+        /// </summary>
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             Key key = e.Key;
-            if (!HotKeys.Contains(key) && key != Key.Enter && counter <=3) 
+
+            if (!HotKeys.Contains(key) && key != Key.Enter && counter <= 3)
             {
+                if (HotKeys.Count == 0) tbMessage.Text = "";
                 counter++;
                 HotKeys.Add(key);
+                tbMessage.Text += key.ToString();
+                if (HotKeys.Count < 3) tbMessage.Text += "+";
             }
             if (counter == 3 || key == Key.Enter) this.Close();
-            
-        }
 
-        private void Window_TextInput(object sender, TextCompositionEventArgs e)
-        {
-            Char keyChar = (Char)System.Text.Encoding.ASCII.GetBytes(e.Text)[0];
-            
-            if (!HotKeysChar.Contains(keyChar) && counter <= 3)
-            {
-                HotKeysChar.Add(keyChar);
-            }
-            Debug.WriteLine(keyChar);
         }
     }
 }

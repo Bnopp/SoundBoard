@@ -1,11 +1,7 @@
 ﻿using NAudio.Wave;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace SoundBoard_UI
@@ -19,13 +15,14 @@ namespace SoundBoard_UI
         public WaveBuffer wBuffer { get; set; }
         public int InputDeviceNb { get; set; }
         public int OutputDeviceNb { get; set; }
+        public string SavePath { get; set; }
 
         private WaveOutEvent _wav = new WaveOutEvent();
         private bool _isFull = false;
         private int _pos = 0;
         private byte[] _buffer;
         private bool _isRecording = false;
-        private string savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"Soundboard");
+        
 
         public bool IsRecording { get { return _isRecording; } }
 
@@ -106,10 +103,10 @@ namespace SoundBoard_UI
         public void Save()
         {
             string pathString = "NewRecording_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".wav";
-            pathString = System.IO.Path.Combine(savePath, pathString);
-            if (!Directory.Exists(savePath))
+            pathString = System.IO.Path.Combine(SavePath, pathString);
+            if (!Directory.Exists(SavePath))
             {
-                Directory.CreateDirectory(savePath);
+                Directory.CreateDirectory(SavePath);
             }
             else
             {
@@ -124,7 +121,7 @@ namespace SoundBoard_UI
             writer.Dispose();
 
             MainWindow window = Application.Current.Windows[0] as MainWindow;
-            window.lsSounds.Add(new Sound() { Name = Path.GetFileNameWithoutExtension(pathString), Shortcut = "none", Path = pathString});
+            window.lsSounds.Add(new Sound() { Name = Path.GetFileNameWithoutExtension(pathString), Shortcut = "none", Path = pathString });
             window.dgSounds.Items.Refresh();
 
             Debug.WriteLine("File Saved!");

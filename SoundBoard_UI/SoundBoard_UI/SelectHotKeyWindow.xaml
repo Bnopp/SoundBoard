@@ -10,8 +10,7 @@
         ResizeMode="NoResize"
         Title="SoundBoard" Height="150" Width="350"
         Background="#131d25"
-        KeyDown="Window_KeyDown"
-        TextInput="Window_TextInput">
+        KeyDown="Window_KeyDown">
     <DockPanel x:Name="RootWindow">
         <DockPanel x:Name="TitleBar" DockPanel.Dock="Top" Background="#282f3a"  MouseDown="TitleBar_MouseDown">
             <Button x:Name="CloseButton"
@@ -25,7 +24,7 @@
             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="20,0,0,0">Add HotKey</TextBlock>
         </DockPanel>
         <Grid>
-            <TextBlock Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">Please press your HotKey</TextBlock>
+            <TextBlock x:Name="tbMessage" Foreground="White" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">Please press your HotKey</TextBlock>
         </Grid>
     </DockPanel>
 </Window>
