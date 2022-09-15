@@ -4,6 +4,7 @@ using NAudio.Wave;
 using NHotkey;
 using NHotkey.Wpf;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -11,6 +12,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -29,7 +31,7 @@ namespace SoundBoard_UI
         public List<Sound> lsSounds;
 
         private AudioRecorder recorder;
-        private string saveDir = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"\Soundboard\Sounds");
+        private string saveDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Soundboard\Sounds";
 
         private int M = 7;
 
@@ -40,17 +42,6 @@ namespace SoundBoard_UI
 
             // if default settings exist
             this.Settings = new Settings();
-            
-
-            if (!File.Exists(_DefaultSettingspath + UserSettingsFilename))
-            {
-                File.Create(_DefaultSettingspath + UserSettingsFilename);
-                Debug.WriteLine(_DefaultSettingspath + UserSettingsFilename);
-            }
-
-            //this.Settings = Settings.Read(_DefaultSettingspath + UserSettingsFilename);
-            this.Settings.HotKeys = new List<Key> { Key.A, Key.LeftCtrl };
-            this.Settings.Save(_DefaultSettingspath + UserSettingsFilename);
 
             lsSounds = new List<Sound>();
 
@@ -69,6 +60,18 @@ namespace SoundBoard_UI
             dgSounds.ItemsSource = lsSounds;
             dgSounds.CanUserAddRows = false;
 
+
+            if (!File.Exists(_DefaultSettingspath + UserSettingsFilename))
+            {
+                File.Create(_DefaultSettingspath + UserSettingsFilename);
+                this.Settings.SoundHotKeys = new List<ArrayList>();
+            }
+            else
+            {
+                this.Settings = Settings.Read(_DefaultSettingspath + UserSettingsFilename);
+                LoadSavedSettings();
+            }
+
             recorder = new AudioRecorder(10);
             recorder.SavePath = saveDir;
             CompositionTarget.Rendering += CompositionTarget_Rendering;
@@ -76,6 +79,18 @@ namespace SoundBoard_UI
             LoadAudioDevices();
 
             HotkeyManager.Current.AddOrReplace("Starter", Key.D1, ModifierKeys.Control | ModifierKeys.Alt, StartOrStop);
+        }
+
+        public void LoadSavedSettings()
+        {
+            foreach (ArrayList list in this.Settings.SoundHotKeys)
+            {
+                HotkeyManager.Current.AddOrReplace((string)list[0], (Key)(int)list[1], (ModifierKeys)(int)list[2] | (ModifierKeys)(int)list[3], PlaySound);
+                dgSounds.SelectedIndex = Convert.ToInt32((string)list[0]);
+                var sound = dgSounds.SelectedItem as Sound;
+                sound.Shortcut = $"{(Key)list[2]}+{(Key)list[3]}+{(Key)list[1]}";
+                dgSounds.Items.Refresh();
+            }
         }
 
         /// <summary>
@@ -231,6 +246,7 @@ namespace SoundBoard_UI
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             recorder.StopRecording();
+            this.Settings.Save(_DefaultSettingspath + UserSettingsFilename);
             Application.Current.Shutdown();
         }
 
@@ -332,6 +348,8 @@ namespace SoundBoard_UI
             }
 
             HotkeyManager.Current.AddOrReplace(cellIndex.ToString(), normalKey, (ModifierKeys)modifierKeys[0] | (ModifierKeys)modifierKeys[1], PlaySound);
+            this.Settings.SoundHotKeys.Add(new ArrayList() { cellIndex.ToString(), normalKey, modifierKeys[0], modifierKeys[1]});
+
             grid.Items.Refresh();
         }
 
