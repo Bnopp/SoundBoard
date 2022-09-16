@@ -56,6 +56,7 @@ namespace SoundBoard_UI
             if (!Directory.Exists(saveDir))
             {
                 Directory.CreateDirectory(saveDir);
+                Debug.WriteLine($"Created Directory: {saveDir}");
             }
 
             string[] Files = System.IO.Directory.GetFiles(saveDir);
@@ -63,6 +64,7 @@ namespace SoundBoard_UI
             for (int i = 0; i < Files.Length; i++)
             {
                 lsSounds.Add(new Sound() { Name = System.IO.Path.GetFileNameWithoutExtension(Files[i]), Shortcut = "none", Path = System.IO.Path.GetFullPath(Files[i]) });
+                Debug.WriteLine($"Loaded sound: {System.IO.Path.GetFileNameWithoutExtension(Files[i])}");
             }
 
             dgSounds.ItemsSource = lsSounds;
@@ -72,11 +74,13 @@ namespace SoundBoard_UI
             if (!File.Exists(_DefaultSettingspath + UserSettingsFilename))
             {
                 this.Settings.SoundHotKeys = new List<ArrayList>();
+                Debug.WriteLine($"Settings file non existant - Created new HotKeys list");
             }
             else
             {
                 this.Settings = Settings.Read(_DefaultSettingspath + UserSettingsFilename);
                 LoadSavedSettings();
+                Debug.WriteLine("Loaded saved settings");
             }
 
             recorder = new AudioRecorder(10);
@@ -84,6 +88,7 @@ namespace SoundBoard_UI
             CompositionTarget.Rendering += CompositionTarget_Rendering;
 
             LoadAudioDevices();
+            Debug.WriteLine("Loaded Audio Devices");
 
             HotkeyManager.Current.AddOrReplace("Starter", Key.D1, ModifierKeys.Control | ModifierKeys.Alt, StartOrStop);
         }
@@ -93,32 +98,53 @@ namespace SoundBoard_UI
         {
             foreach (ArrayList list in this.Settings.SoundHotKeys)
             {
-                int index = lsSounds.FindIndex(a => a.Name == (string)list[0]);
-                Debug.WriteLine("index found " + index);
-                Debug.WriteLine((string)list[0]);
+                int index = lsSounds.FindIndex(a => a.Path == (string)list[0]);
                 if (index != -1) 
                 {
+                    Debug.WriteLine($"Sound found at postiton {index}: {(string)list[0]}");
                     dgSounds.SelectedIndex = index;
                     CreateHotKey(new List<Key>() { (Key)(int)list[1], (Key)(int)list[2], (Key)(int)list[3] }, index, true);
+                    Debug.WriteLine($"Created HotKey for {(string)list[0]} - {(Key)(int)list[1]}+{(Key)(int)list[2]}+{(Key)(int)list[3]}");
                     dgSounds.Items.Refresh();
                 }
                 else
                 {
+                    Debug.WriteLine($"Sound {(string)list[0]} not found, adding binded HotKey to remove list: {(Key)(int)list[1]}+{(Key)(int)list[2]}+{(Key)(int)list[3]}");
                     hotKeysToRemove.Add(list);
                 }
             }
-            foreach (ArrayList list in hotKeysToRemove)
+            
+            if (hotKeysToRemove.Count > 0)
             {
-                Debug.WriteLine("Remove" + (string)list[0]);
+                Debug.WriteLine("HotKeys to remove:");
+                foreach (ArrayList list in hotKeysToRemove)
+                {
+                    Debug.WriteLine($"-     {(string)list[0]} - {(Key)(int)list[1]}+{(Key)(int)list[2]}+{(Key)(int)list[3]}");
+                }
+                RemoveOldHotKeys();
             }
-            RemoveOldHotKeys(hotKeysToRemove);
+            else
+            {
+                Debug.WriteLine("No keys to remove");
+            }
         }
 
-        public void RemoveOldHotKeys(List<ArrayList> hotkeys)
+        public void RemoveOldHotKeys()
         {
-            foreach (ArrayList list in hotkeys)
+            Debug.WriteLine("Attempting to remove HotKeys");
+            if (hotKeysToRemove.Count > 0)
             {
-                Debug.WriteLine(this.Settings.SoundHotKeys.Remove(list));
+                Debug.WriteLine("Removing HotKeys: ");
+                foreach (ArrayList list in hotKeysToRemove)
+                {
+                    this.Settings.SoundHotKeys.Remove(list);
+                    Debug.WriteLine($"-     {(string)list[0]} - {(Key)(int)list[1]}+{(Key)(int)list[2]}+{(Key)(int)list[3]}");
+                }
+                hotKeysToRemove.Clear();
+            }
+            else
+            {
+                Debug.WriteLine("No keys to remove");
             }
         }
 
@@ -127,7 +153,7 @@ namespace SoundBoard_UI
         /// </summary>
         public void LoadAudioDevices()
         {
-            var watch = Stopwatch.StartNew();
+            
 
             foreach (KeyValuePair<string, MMDevice> device in GetInputAudioDevices())
             {
@@ -144,9 +170,7 @@ namespace SoundBoard_UI
             if (cbRecording.Items.Count > 0) cbRecording.SelectedIndex = 0;
             if (cbPlayback.Items.Count > 0) cbPlayback.SelectedIndex = 0;
 
-            watch.Stop();
             Debug.WriteLine("Loaded Audio Devices");
-            Debug.WriteLine($"Execution time: {watch.ElapsedMilliseconds} ms");
         }
 
         /// <summary>
@@ -193,23 +217,37 @@ namespace SoundBoard_UI
             return retVal;
         }
 
-        private dynamic HotKeyExists(string name)
+        public dynamic HotKeyExists(string name)
         {
+            Debug.WriteLine($"Cheking if the HotKey for {name} already exists");
+            
+            foreach (Sound tmp in lsSounds)
+            {
+                Debug.WriteLine(tmp.Path);
+            }
+
             foreach (ArrayList list in this.Settings.SoundHotKeys)
             {
-                int index = lsSounds.FindIndex(a => a.Name == name);
-                if (index != -1) return list;
+                int index = lsSounds.FindIndex(a => a.Path == name);
+                if (index != -1) 
+                {
+                    Debug.WriteLine($"HotKey for {name} exists");
+                    return list; 
+                }
             }
+            Debug.WriteLine($"HotKey for {name} doesn't exist");
             return false;
         }
 
-        private void CreateHotKey(List<Key> input, int index, bool loadingSettings)
+        public void CreateHotKey(List<Key> input, int index, bool loadingSettings)
         {
             int count = 0;
             dgSounds.SelectedIndex = index;
             Sound tmpSound = dgSounds.SelectedItem as Sound;
-            var checkExist = HotKeyExists(tmpSound.Name);
-            if (loadingSettings && checkExist is ArrayList) hotKeysToRemove.Add(checkExist);
+
+            var checkExist = HotKeyExists(tmpSound.Path);
+            if (!loadingSettings && checkExist is ArrayList) hotKeysToRemove.Add(checkExist);
+
             tmpSound.Shortcut = "";
             List<Key> modifierKeys = new List<Key>();
             Key normalKey = Key.None;
@@ -252,11 +290,27 @@ namespace SoundBoard_UI
                 count++;
                 if (count < input.Count) tmpSound.Shortcut += "+";
             }
-
-            HotkeyManager.Current.AddOrReplace(tmpSound.Name, normalKey, (ModifierKeys)modifierKeys[0] | (ModifierKeys)modifierKeys[1], PlaySound);
-            if (!loadingSettings) this.Settings.SoundHotKeys.Add(new ArrayList() { tmpSound.Name, modifierKeys[0], modifierKeys[1], normalKey});
-
+            HotkeyManager.Current.AddOrReplace(tmpSound.Path, normalKey, (ModifierKeys)modifierKeys[0] | (ModifierKeys)modifierKeys[1], PlaySound);
+            Debug.WriteLine("Created hotkey " + $"-     {tmpSound.Name} - {modifierKeys[0].ToString()}+{modifierKeys[1].ToString()}+{normalKey.ToString()}");
+            if (!loadingSettings)
+            {
+                this.Settings.SoundHotKeys.Add(new ArrayList() { tmpSound.Path, modifierKeys[0], modifierKeys[1], normalKey });
+                Debug.WriteLine("Added HotKey to Settings");
+            }
             dgSounds.Items.Refresh();
+        }
+
+        public bool isModifier(Key key)
+        {
+            if (key == Key.LeftCtrl || key == Key.RightCtrl ||
+                key == Key.LeftShift || key == Key.RightShift ||
+                key == Key.LeftAlt || key == Key.RightAlt) 
+            {
+                Debug.WriteLine($"{key.ToString()} is modifier");
+                return true;
+            }
+
+            return false;
         }
 
         #region Window Control
@@ -354,12 +408,23 @@ namespace SoundBoard_UI
         private void CellDouble_Click(object sender, MouseEventArgs e)
         {
             var grid = sender as DataGrid;
-            var cellIndex = grid.SelectedIndex;
+            Debug.WriteLine($"Grid Selected Index {grid.SelectedIndex}");
 
-            SelectHotKeyWindow hotKeyWindow = new SelectHotKeyWindow();
-            hotKeyWindow.ShowDialog();
+            if (grid.SelectedIndex != -1)
+            {
+                var cellIndex = grid.SelectedIndex;
+                SelectHotKeyWindow hotKeyWindow = new SelectHotKeyWindow();
+                hotKeyWindow.ShowDialog();
 
-            CreateHotKey(hotKeyWindow.HotKeys, cellIndex, false);
+                if (hotKeyWindow.HotKeys.Count == 3)
+                {
+                    if (isModifier(hotKeyWindow.HotKeys[0]) && isModifier(hotKeyWindow.HotKeys[1]) && !isModifier(hotKeyWindow.HotKeys[2]))
+                    {
+                        CreateHotKey(hotKeyWindow.HotKeys, cellIndex, false);
+                        RemoveOldHotKeys();
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -437,7 +502,7 @@ namespace SoundBoard_UI
         {
             if (dgSounds.Items.Count > 0)
             {
-                var reader = new WaveFileReader(System.IO.Path.GetFullPath(lsSounds[Convert.ToInt32(e.Name)].Path));
+                var reader = new WaveFileReader(System.IO.Path.GetFullPath(e.Name));
                 var waveOut = new WaveOut();
                 waveOut.DeviceNumber = cbPlayback.SelectedIndex;
                 waveOut.Init(reader);

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using Windows.ApplicationModel.Background;
+using Windows.UI.Xaml.Automation.Peers;
 
 namespace SoundBoard_UI
 {
@@ -11,7 +14,6 @@ namespace SoundBoard_UI
     public partial class SelectHotKeyWindow : Window
     {
         public List<Key> HotKeys = new List<Key>();
-        public List<Char> HotKeysChar = new List<Char>();
         private int counter = 0;
 
         public SelectHotKeyWindow()

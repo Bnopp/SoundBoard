@@ -52,11 +52,11 @@ namespace SoundBoard_UI
                 try
                 {
                     LoopbackIn.StartRecording();
-                    Debug.WriteLine("Started Recoring!");
+                    Debug.WriteLine("Started Recoring");
                 }
                 catch (InvalidOperationException)
                 {
-                    Debug.WriteLine("Already Recording!");
+                    Debug.WriteLine("Already Recording");
                 }
             }
 
@@ -70,7 +70,7 @@ namespace SoundBoard_UI
         {
             LoopbackIn.StopRecording();
             _isRecording = false;
-            Debug.WriteLine("Stopped Recording!");
+            Debug.WriteLine("Stopped Recording");
         }
 
         /// <summary>
