@@ -11,10 +11,14 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Windows.ApplicationModel.VoiceCommands;
+using Windows.UI.Xaml.Controls;
+using Canvas = System.Windows.Controls.Canvas;
 
 namespace SoundBoard_UI
 {
@@ -23,18 +27,22 @@ namespace SoundBoard_UI
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Variables
         public const string UserSettingsFilename = @"\settings.xml";
         public string _DefaultSettingspath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Soundboard";
 
         public Settings Settings { get; private set; }
 
         public List<Sound> lsSounds;
+        public List<ArrayList> hotKeysToRemove = new List<ArrayList>();
 
         private AudioRecorder recorder;
         private string saveDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Soundboard\Sounds";
 
         private int M = 7;
+        #endregion
 
+        #region Constructor
         /* The constructor of the MainWindow class. */
         public MainWindow()
         {
@@ -63,7 +71,6 @@ namespace SoundBoard_UI
 
             if (!File.Exists(_DefaultSettingspath + UserSettingsFilename))
             {
-                File.Create(_DefaultSettingspath + UserSettingsFilename);
                 this.Settings.SoundHotKeys = new List<ArrayList>();
             }
             else
@@ -80,84 +87,38 @@ namespace SoundBoard_UI
 
             HotkeyManager.Current.AddOrReplace("Starter", Key.D1, ModifierKeys.Control | ModifierKeys.Alt, StartOrStop);
         }
+        #endregion
 
         public void LoadSavedSettings()
         {
             foreach (ArrayList list in this.Settings.SoundHotKeys)
             {
-                HotkeyManager.Current.AddOrReplace((string)list[0], (Key)(int)list[1], (ModifierKeys)(int)list[2] | (ModifierKeys)(int)list[3], PlaySound);
-                dgSounds.SelectedIndex = Convert.ToInt32((string)list[0]);
-                var sound = dgSounds.SelectedItem as Sound;
-                sound.Shortcut = $"{(Key)list[2]}+{(Key)list[3]}+{(Key)list[1]}";
-                dgSounds.Items.Refresh();
-            }
-        }
-
-        /// <summary>
-        /// Start/Stop recording using a HotKey Shortcut
-        /// </summary>
-        /// <param name="Sender"></param>
-        /// <param name="HotkeyEventArgs"></param>
-        private void StartOrStop(object Sender, HotkeyEventArgs e)
-        {
-            string action = "";
-            if (!recorder.IsRecording)
-            {
-                recorder.StartRecording();
-                action = "Started";
-            }
-            else
-            {
-                recorder.StopRecording();
-                action = "Stopped";
-            }
-
-            new ToastContentBuilder()
-                .AddText("Soundboard Recording " + action)
-                .AddButton(new ToastButton()
-                .SetContent("Ok")
-                .SetBackgroundActivation())
-                .Show(toast =>
+                int index = lsSounds.FindIndex(a => a.Name == (string)list[0]);
+                Debug.WriteLine("index found " + index);
+                Debug.WriteLine((string)list[0]);
+                if (index != -1) 
                 {
-                    toast.ExpirationTime = DateTime.Now.AddSeconds(2);
-                });
+                    dgSounds.SelectedIndex = index;
+                    CreateHotKey(new List<Key>() { (Key)(int)list[1], (Key)(int)list[2], (Key)(int)list[3] }, index, true);
+                    dgSounds.Items.Refresh();
+                }
+                else
+                {
+                    hotKeysToRemove.Add(list);
+                }
+            }
+            foreach (ArrayList list in hotKeysToRemove)
+            {
+                Debug.WriteLine("Remove" + (string)list[0]);
+            }
+            RemoveOldHotKeys(hotKeysToRemove);
         }
 
-        /// <summary>
-        /// It takes the audio data from the microphone, converts it to a complex number, performs a
-        /// Fast Fourier Transform on it, and then draws a rectangle for each frequency
-        /// </summary>
-        /// <param name="sender">The object that raised the event.</param>
-        /// <param name="e">The event arguments</param>
-        /// <returns>
-        /// The FFT returns a complex number.
-        /// </returns>
-        void CompositionTarget_Rendering(object sender, System.EventArgs e)
+        public void RemoveOldHotKeys(List<ArrayList> hotkeys)
         {
-            if (recorder.wBuffer == null) return;
-
-            int len = recorder.wBuffer.FloatBuffer.Length / 8;
-
-            NAudio.Dsp.Complex[] values = new NAudio.Dsp.Complex[len];
-            for (int i = 0; i < len; i++)
+            foreach (ArrayList list in hotkeys)
             {
-                values[i].Y = 0;
-                values[i].X = recorder.wBuffer.FloatBuffer[i];
-            }
-            NAudio.Dsp.FastFourierTransform.FFT(true, M, values);
-
-            float size = (float)cVisualiser.ActualWidth / ((float)Math.Pow(2, M) / 2);
-
-            cVisualiser.Children.Clear();
-
-            for (int i = 1; i < Math.Pow(2, M) / 2; i++)
-            {
-                Rectangle rect = new Rectangle { Fill = new SolidColorBrush(Color.FromRgb(253, 133, 74)), Width = size, Height = Math.Abs(values[i].X) * (cVisualiser.ActualHeight / 2) * 5, RadiusY = 5, RadiusX = 5 };
-                rect.SetValue(Canvas.LeftProperty, Convert.ToDouble((i - 1) * size));
-                rect.SetValue(Canvas.TopProperty, cVisualiser.Height);
-                ScaleTransform stInvert = new ScaleTransform(1, -1);
-                rect.RenderTransform = stInvert;
-                cVisualiser.Children.Add(rect);
+                Debug.WriteLine(this.Settings.SoundHotKeys.Remove(list));
             }
         }
 
@@ -232,83 +193,28 @@ namespace SoundBoard_UI
             return retVal;
         }
 
-        /// <summary>
-        /// TitleBar_MouseDown - Drag if single-click, resize if double-click
-        /// </summary>
-        private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
+        private dynamic HotKeyExists(string name)
         {
-            if (e.ChangedButton == MouseButton.Left) Application.Current.MainWindow.DragMove();
-        }
-
-        /// <summary>
-        /// CloseButton_Clicked
-        /// </summary>
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            recorder.StopRecording();
-            this.Settings.Save(_DefaultSettingspath + UserSettingsFilename);
-            Application.Current.Shutdown();
-        }
-
-        /// <summary>
-        /// Minimized Button_Clicked
-        /// </summary>
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
-
-        /// <summary>
-        /// Start Recording Button_Clicked
-        /// </summary>
-        private void btnRecordingStart_Click(object sender, RoutedEventArgs e)
-        {
-            if (!recorder.IsRecording)
+            foreach (ArrayList list in this.Settings.SoundHotKeys)
             {
-                recorder.StartRecording();
-                (sender as Button).Content = "Stop";
+                int index = lsSounds.FindIndex(a => a.Name == name);
+                if (index != -1) return list;
             }
-            else
-            {
-                recorder.StopRecording();
-                (sender as Button).Content = "Start";
-            }
+            return false;
         }
 
-        /// <summary>
-        /// Save Button_Clicked
-        /// </summary>
-        private void btnRecordingSave_Click(object sender, RoutedEventArgs e)
+        private void CreateHotKey(List<Key> input, int index, bool loadingSettings)
         {
-            recorder.Save();
-        }
-
-        /// <summary>
-        /// Cell DoubleMouseClick
-        /// </summary>
-        private void CellDouble_Click(object sender, MouseEventArgs e)
-        {
-            var grid = sender as DataGrid;
-            var cellIndex = grid.SelectedIndex;
-            var tmpSound = (grid.SelectedItem as Sound);
-
-            DataGridCell dgc = grid.SelectedItem as DataGridCell;
-
-            SelectHotKeyWindow hotKeyWindow = new SelectHotKeyWindow();
-            hotKeyWindow.ShowDialog();
-
-
-            Debug.WriteLine("Keys:");
-
             int count = 0;
+            dgSounds.SelectedIndex = index;
+            Sound tmpSound = dgSounds.SelectedItem as Sound;
+            var checkExist = HotKeyExists(tmpSound.Name);
+            if (loadingSettings && checkExist is ArrayList) hotKeysToRemove.Add(checkExist);
             tmpSound.Shortcut = "";
             List<Key> modifierKeys = new List<Key>();
             Key normalKey = Key.None;
-
-            foreach (Key key in hotKeyWindow.HotKeys)
+            foreach (Key key in input)
             {
-                Debug.WriteLine(key.ToString());
-
                 /* Checking if the key pressed is a modifier key (Ctrl, Alt, Shift) and if it is, it
                 adds it to the list of modifier keys. If it is not a modifier key, it sets it to the
                 normalKey variable. */
@@ -344,13 +250,92 @@ namespace SoundBoard_UI
                         break;
                 }
                 count++;
-                if (count < hotKeyWindow.HotKeys.Count) tmpSound.Shortcut += "+";
+                if (count < input.Count) tmpSound.Shortcut += "+";
             }
 
-            HotkeyManager.Current.AddOrReplace(cellIndex.ToString(), normalKey, (ModifierKeys)modifierKeys[0] | (ModifierKeys)modifierKeys[1], PlaySound);
-            this.Settings.SoundHotKeys.Add(new ArrayList() { cellIndex.ToString(), normalKey, modifierKeys[0], modifierKeys[1]});
+            HotkeyManager.Current.AddOrReplace(tmpSound.Name, normalKey, (ModifierKeys)modifierKeys[0] | (ModifierKeys)modifierKeys[1], PlaySound);
+            if (!loadingSettings) this.Settings.SoundHotKeys.Add(new ArrayList() { tmpSound.Name, modifierKeys[0], modifierKeys[1], normalKey});
 
-            grid.Items.Refresh();
+            dgSounds.Items.Refresh();
+        }
+
+        #region Window Control
+        /// <summary>
+        /// TitleBar_MouseDown - Drag if single-click, resize if double-click
+        /// </summary>
+        private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left) Application.Current.MainWindow.DragMove();
+        }
+
+        /// <summary>
+        /// CloseButton_Clicked
+        /// </summary>
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            recorder.StopRecording();
+            this.Settings.Save(_DefaultSettingspath + UserSettingsFilename);
+            Application.Current.Shutdown();
+        }
+
+        /// <summary>
+        /// Minimized Button_Clicked
+        /// </summary>
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Start Recording Button_Clicked
+        /// </summary>
+        private void btnRecordingStart_Click(object sender, RoutedEventArgs e)
+        {
+            if (!recorder.IsRecording)
+            {
+                recorder.StartRecording();
+                btnRecordingStart.Content = "Stop";
+            }
+            else
+            {
+                recorder.StopRecording();
+                btnRecordingStart.Content = "Start";
+            }
+        }
+
+        /// <summary>
+        /// Save Button_Clicked
+        /// </summary>
+        private void btnRecordingSave_Click(object sender, RoutedEventArgs e)
+        {
+            recorder.Save();
+        }
+
+        /// <summary>
+        /// Play Button_Clicked
+        /// </summary>
+        private void btnSoundPlay_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgSounds.Items.Count > 0)
+            {
+                var reader = new WaveFileReader(System.IO.Path.GetFullPath(lsSounds[dgSounds.SelectedIndex].Path));
+                var waveOut = new WaveOut();
+                waveOut.DeviceNumber = cbPlayback.SelectedIndex;
+                waveOut.Init(reader);
+                waveOut.Play();
+                Debug.WriteLine("Playing " + dgSounds.SelectedIndex);
+            }
+        }
+
+        /// <summary>
+        /// Changes recording time depending on the slider value
+        /// </summary>
+        private void sTimeToSave_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (recorder != null) recorder.RecordTime = (int)sTimeToSave.Value;
         }
 
         /// <summary>
@@ -364,18 +349,84 @@ namespace SoundBoard_UI
         }
 
         /// <summary>
-        /// Plays the sound file that is selected in the listbox
+        /// DataGrid Cell_DoubleMouseClick
         /// </summary>
-        private void btnSoundPlay_Click(object sender, RoutedEventArgs e)
+        private void CellDouble_Click(object sender, MouseEventArgs e)
         {
-            if (dgSounds.Items.Count > 0)
+            var grid = sender as DataGrid;
+            var cellIndex = grid.SelectedIndex;
+
+            SelectHotKeyWindow hotKeyWindow = new SelectHotKeyWindow();
+            hotKeyWindow.ShowDialog();
+
+            CreateHotKey(hotKeyWindow.HotKeys, cellIndex, false);
+        }
+
+        /// <summary>
+        /// Start/Stop recording using a HotKey Shortcut
+        /// </summary>
+        /// <param name="Sender"></param>
+        /// <param name="HotkeyEventArgs"></param>
+        private void StartOrStop(object Sender, HotkeyEventArgs e)
+        {
+            string action = "";
+            if (!recorder.IsRecording)
             {
-                var reader = new WaveFileReader(System.IO.Path.GetFullPath(lsSounds[dgSounds.SelectedIndex].Path));
-                var waveOut = new WaveOut();
-                waveOut.DeviceNumber = cbPlayback.SelectedIndex;
-                waveOut.Init(reader);
-                waveOut.Play();
-                Debug.WriteLine("Playing " + dgSounds.SelectedIndex);
+                recorder.StartRecording();
+                action = "Started";
+            }
+            else
+            {
+                recorder.StopRecording();
+                action = "Stopped";
+            }
+
+            new ToastContentBuilder()
+                .AddText("Soundboard Recording " + action)
+                .AddButton(new ToastButton()
+                .SetContent("Ok")
+                .SetBackgroundActivation())
+                .Show(toast =>
+                {
+                    toast.ExpirationTime = DateTime.Now.AddSeconds(2);
+                });
+        }
+
+        /// <summary>
+        /// It takes the audio data from the microphone, converts it to a complex number, performs a
+        /// Fast Fourier Transform on it, and then draws a rectangle for each frequency
+        /// </summary>
+        /// <param name="sender">The object that raised the event.</param>
+        /// <param name="e">The event arguments</param>
+        /// <returns>
+        /// The FFT returns a complex number.
+        /// </returns>
+        private void CompositionTarget_Rendering(object sender, System.EventArgs e)
+        {
+            if (recorder.wBuffer == null) return;
+
+            int len = recorder.wBuffer.FloatBuffer.Length / 8;
+
+            NAudio.Dsp.Complex[] values = new NAudio.Dsp.Complex[len];
+            for (int i = 0; i < len; i++)
+            {
+                values[i].Y = 0;
+                values[i].X = recorder.wBuffer.FloatBuffer[i];
+            }
+            NAudio.Dsp.FastFourierTransform.FFT(true, M, values);
+
+            float size = (float)cVisualiser.ActualWidth / ((float)Math.Pow(2, M) / 2);
+
+            cVisualiser.Children.Clear();
+
+            for (int i = 1; i < Math.Pow(2, M) / 2; i++)
+            {
+                Rectangle rect = new Rectangle { Fill = new SolidColorBrush(Color.FromRgb(253, 133, 74)), Width = size, Height = Math.Abs(values[i].X) * (cVisualiser.ActualHeight / 2) * 5, RadiusY = 5, RadiusX = 5 };
+                rect.SetValue(Canvas.LeftProperty, Convert.ToDouble((i - 1) * size));
+                rect.SetValue(Canvas.TopProperty, cVisualiser.Height);
+                ScaleTransform stInvert = new ScaleTransform(1, -1);
+                rect.RenderTransform = stInvert;
+                cVisualiser.Children.Add(rect);
             }
         }
 
@@ -395,12 +446,6 @@ namespace SoundBoard_UI
             }
         }
 
-        /// <summary>
-        /// Changes recording time depending on the slider value
-        /// </summary>
-        private void sTimeToSave_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (recorder != null) recorder.RecordTime = (int)sTimeToSave.Value;
-        }
+        #endregion
     }
 }
