@@ -94,6 +94,9 @@ namespace SoundBoard_UI
         }
         #endregion
 
+        /// <summary>
+        /// Loads saved settings
+        /// </summary>
         public void LoadSavedSettings()
         {
             foreach (ArrayList list in this.Settings.SoundHotKeys)
@@ -129,6 +132,9 @@ namespace SoundBoard_UI
             }
         }
 
+        /// <summary>
+        /// It removes old hotkeys.
+        /// </summary>
         public void RemoveOldHotKeys()
         {
             Debug.WriteLine("Attempting to remove HotKeys");
@@ -217,33 +223,49 @@ namespace SoundBoard_UI
             return retVal;
         }
 
+        /// <summary>
+        /// It checks if a hotkey exists.
+        /// </summary>
+        /// <param name="name">The name of the hotkey you want to check for.</param>
         public dynamic HotKeyExists(string name)
         {
             Debug.WriteLine($"Cheking if the HotKey for {name} already exists");
             
-            foreach (Sound tmp in lsSounds)
+            /*foreach (Sound tmp in lsSounds)
             {
                 Debug.WriteLine(tmp.Path);
-            }
+            }*/
 
             foreach (ArrayList list in this.Settings.SoundHotKeys)
             {
                 int index = lsSounds.FindIndex(a => a.Path == name);
-                if (index != -1) 
+                if (index != -1 && name == (string)list[0]) 
                 {
                     Debug.WriteLine($"HotKey for {name} exists");
+                    Debug.WriteLine($"HotKey for {index} exists");
+                    Debug.WriteLine($"{(Key)list[3]}");
                     return list; 
                 }
             }
+
             Debug.WriteLine($"HotKey for {name} doesn't exist");
             return false;
         }
 
+        /// <summary>
+        /// It creates a hotkey
+        /// </summary>
+        /// <param name="input">The list of keys that make up the hotkey.</param>
+        /// <param name="index">The index of the hotkey in the list of hotkeys.</param>
+        /// <param name="loadingSettings">This is a boolean value that tells the program whether or not
+        /// it's loading settings from the settings file. If it is, then it will not add the hotkey to
+        /// the list of hotkeys.</param>
         public void CreateHotKey(List<Key> input, int index, bool loadingSettings)
         {
             int count = 0;
             dgSounds.SelectedIndex = index;
             Sound tmpSound = dgSounds.SelectedItem as Sound;
+            Debug.WriteLine(tmpSound.Shortcut + "----------------");
 
             var checkExist = HotKeyExists(tmpSound.Path);
             if (!loadingSettings && checkExist is ArrayList) hotKeysToRemove.Add(checkExist);
@@ -300,6 +322,10 @@ namespace SoundBoard_UI
             dgSounds.Items.Refresh();
         }
 
+        /// <summary>
+        /// It checks if the key is a modifier key.
+        /// </summary>
+        /// <param name="Key">The key to check</param>
         public bool isModifier(Key key)
         {
             if (key == Key.LeftCtrl || key == Key.RightCtrl ||
@@ -405,11 +431,9 @@ namespace SoundBoard_UI
         /// <summary>
         /// DataGrid Cell_DoubleMouseClick
         /// </summary>
-        private void CellDouble_Click(object sender, MouseEventArgs e)
+        private void GridDouble_Click(object sender, MouseEventArgs e)
         {
             var grid = sender as DataGrid;
-            Debug.WriteLine($"Grid Selected Index {grid.SelectedIndex}");
-
             if (grid.SelectedIndex != -1)
             {
                 var cellIndex = grid.SelectedIndex;
