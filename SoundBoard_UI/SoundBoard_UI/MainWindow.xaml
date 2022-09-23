@@ -11,7 +11,8 @@
         ResizeMode="NoResize"
         Title="SoundBoard" Height="450" Width="800"
         Background="#131d25"
-        AllowsTransparency="True">
+        AllowsTransparency="True"
+        KeyDown="Window_KeyDown">
     <Window.Clip>
         <RectangleGeometry Rect="0,0,800,450" RadiusX="10" RadiusY="10"/>
     </Window.Clip>
@@ -94,7 +95,7 @@
                 </Border>
             </StackPanel>
 
-            <Label Grid.Column="0" Grid.Row="1" Margin="20,0,0,10" Foreground="White" FontSize="8" Content="Copyright © Serghei Diulgherov - BnoppSoftware. All rights reserved."/>
+            <Label Grid.Column="0" Grid.Row="1" Margin="20,0,0,10" Foreground="White" FontSize="12" Content="Copyright © Serghei Diulgherov - BnoppSoftware. All rights reserved."/>
 
             <StackPanel x:Name="spContainerRight" Grid.Column="1" Margin="20">
                 <DataGrid x:Name="dgSounds" IsReadOnly="True" Height="285"

@@ -37,6 +37,8 @@ namespace SoundBoard_UI
         public List<Sound> lsSounds;
         public List<ArrayList> hotKeysToRemove = new List<ArrayList>();
 
+        private StreamWriter _sw;
+        private StreamReader _sr;
         private FileSystemWatcher _watcher;
         private AudioRecorder recorder;
         private WaveOut waveOut;
@@ -95,7 +97,7 @@ namespace SoundBoard_UI
             _watcher.Deleted += OnDelete;
             _watcher.EnableRaisingEvents = true;
 
-            recorder = new AudioRecorder(10);
+            recorder = new AudioRecorder(sTimeToSave.Value);
             waveOut = new WaveOut();
             recorder.SavePath = saveDir;
             CompositionTarget.Rendering += CompositionTarget_Rendering;
@@ -103,9 +105,19 @@ namespace SoundBoard_UI
             LoadAudioDevices();
             Debug.WriteLine("Loaded Audio Devices");
 
+            if (!File.Exists(saveDir + @"\preventFileDelete.tmp"))
+            {
+                _sw = File.CreateText(saveDir + @"\preventFileDelete.tmp");
+                _sw.Dispose();
+            }
+            File.SetAttributes(saveDir + @"\preventFileDelete.tmp", FileAttributes.Hidden);
+            _sr = File.OpenText(saveDir + @"\preventFileDelete.tmp");
+
             HotkeyManager.Current.AddOrReplace("Starter", Key.D1, ModifierKeys.Control | ModifierKeys.Alt, StartOrStop);
         }
         #endregion
+
+        #region Methods
 
         /// <summary>
         /// Loads saved settings
@@ -119,13 +131,14 @@ namespace SoundBoard_UI
                 {
                     Debug.WriteLine($"Sound found at postiton {index}: {(string)list[0]}");
                     dgSounds.SelectedIndex = index;
-                    CreateHotKey(new List<Key>() { (Key)(int)list[1], (Key)(int)list[2], (Key)(int)list[3] }, index, true);
-                    Debug.WriteLine($"Created HotKey for {(string)list[0]} - {(Key)(int)list[1]}+{(Key)(int)list[2]}+{(Key)(int)list[3]}");
+
+                    CreateHotKey(new List<Key>() {(Key)list[1], (Key)list[2], (Key)list[3] }, index, true);
+                    Debug.WriteLine($"Created HotKey for {(string)list[0]} - {(ModifierKeys)(int)list[1]}+{(ModifierKeys)(int)list[2]}+{(Key)(int)list[3]}");
                     dgSounds.Items.Refresh();
                 }
                 else
                 {
-                    Debug.WriteLine($"Sound {(string)list[0]} not found, adding binded HotKey to remove list: {(Key)(int)list[1]}+{(Key)(int)list[2]}+{(Key)(int)list[3]}");
+                    Debug.WriteLine($"Sound {(string)list[0]} not found, adding binded HotKey to remove list: {(ModifierKeys)(int)list[1]}+{(ModifierKeys)(int)list[2]}+{(Key)(int)list[3]}");
                     hotKeysToRemove.Add(list);
                 }
             }
@@ -268,62 +281,22 @@ namespace SoundBoard_UI
         /// <param name="loadingSettings">This is a boolean value that tells the program whether or not
         /// it's loading settings from the settings file. If it is, then it will not add the hotkey to
         /// the list of hotkeys.</param>
-        public void CreateHotKey(List<Key> input, int index, bool loadingSettings)
+        public void CreateHotKey(List<Key> keys, int index, bool loadingSettings)
         {
-            int count = 0;
             dgSounds.SelectedIndex = index;
             Sound tmpSound = dgSounds.SelectedItem as Sound;
 
             var checkExist = HotKeyExists(tmpSound.Path);
             if (!loadingSettings && checkExist is ArrayList) hotKeysToRemove.Add(checkExist);
 
-            tmpSound.Shortcut = "";
-            List<ModifierKeys> modifierKeys = new List<ModifierKeys>();
-            Key normalKey = Key.None;
-            foreach (Key key in input)
-            {
-                /* Checking if the key pressed is a modifier key (Ctrl, Alt, Shift) and if it is, it
-                adds it to the list of modifier keys. If it is not a modifier key, it sets it to the
-                normalKey variable. */
-                switch (key)
-                {
-                    case Key.LeftCtrl :
-                        tmpSound.Shortcut += "LCtrl";
-                        modifierKeys.Add(ModifierKeys.Control);
-                        break;
-                    case Key.RightCtrl:
-                        tmpSound.Shortcut += "RCtrl";
-                        modifierKeys.Add(ModifierKeys.Control);
-                        break;
-                    case Key.LeftAlt:
-                        tmpSound.Shortcut += "LAlt";
-                        modifierKeys.Add(ModifierKeys.Alt);
-                        break;
-                    case Key.RightAlt:
-                        tmpSound.Shortcut += "RAlt";
-                        modifierKeys.Add(ModifierKeys.Alt);
-                        break;
-                    case Key.LeftShift:
-                        tmpSound.Shortcut += "LShift";
-                        modifierKeys.Add(ModifierKeys.Shift);
-                        break;
-                    case Key.RightShift:
-                        tmpSound.Shortcut += "RShift";
-                        modifierKeys.Add(ModifierKeys.Shift);
-                        break;
-                    default:
-                        tmpSound.Shortcut += key.ToString();
-                        normalKey = key;
-                        break;
-                }
-                count++;
-                if (count < input.Count) tmpSound.Shortcut += "+";
-            }
-            HotkeyManager.Current.AddOrReplace(tmpSound.Path, normalKey, modifierKeys[0] | modifierKeys[1], PlaySound);
-            Debug.WriteLine("Created hotkey " + $"-     {tmpSound.Name} - {modifierKeys[0].ToString()}+{modifierKeys[1].ToString()}+{normalKey.ToString()}");
+            tmpSound.Shortcut = $"{convertToModifier(keys[0])}+{convertToModifier(keys[1])}+{keys[2]}";
+
+            HotkeyManager.Current.AddOrReplace(tmpSound.Path, keys[2], convertToModifier(keys[0]) | convertToModifier(keys[1]), PlaySound);
+            Debug.WriteLine("Created hotkey " + $"-     {tmpSound.Name} - {convertToModifier(keys[0])}+{convertToModifier(keys[1])}+{keys[2]}");
+            
             if (!loadingSettings)
             {
-                this.Settings.SoundHotKeys.Add(new ArrayList() { tmpSound.Path, modifierKeys[0], modifierKeys[1], normalKey });
+                this.Settings.SoundHotKeys.Add(new ArrayList() { tmpSound.Path, convertToModifier(keys[0]), convertToModifier(keys[1]), keys[2] });
                 Debug.WriteLine("Added HotKey to Settings");
             }
             dgSounds.Items.Refresh();
@@ -333,11 +306,12 @@ namespace SoundBoard_UI
         /// It checks if the key is a modifier key.
         /// </summary>
         /// <param name="Key">The key to check</param>
-        public bool isModifier(Key key)
+        public bool isModifier(int key)
         {
-            if (key == Key.LeftCtrl || key == Key.RightCtrl ||
-                key == Key.LeftShift || key == Key.RightShift ||
-                key == Key.LeftAlt || key == Key.RightAlt) 
+            Debug.WriteLine((Key)key);
+            if ((Key)key == Key.LeftCtrl || (Key)key == Key.RightCtrl ||
+                (Key)key == Key.LeftShift || (Key)key == Key.RightShift ||
+                (Key)key == Key.LeftAlt || (Key)key == Key.RightAlt) 
             {
                 Debug.WriteLine($"{key.ToString()} is modifier");
                 return true;
@@ -345,6 +319,25 @@ namespace SoundBoard_UI
 
             return false;
         }
+
+        public ModifierKeys convertToModifier(Key nKey)
+        {
+            if (nKey == Key.LeftCtrl || nKey == Key.RightCtrl)
+            {
+                return ModifierKeys.Control;
+            }
+            else if(nKey == Key.LeftShift || nKey == Key.RightShift)
+            {
+                return ModifierKeys.Shift;
+            }
+            else if(nKey == Key.LeftAlt || nKey == Key.RightAlt)
+            {
+                return ModifierKeys.Alt;
+            }
+            return ModifierKeys.None;
+        }
+
+        #endregion
 
         #region Window Control
         /// <summary>
@@ -362,6 +355,9 @@ namespace SoundBoard_UI
         {
             recorder.StopRecording();
             this.Settings.Save(_DefaultSettingspath + UserSettingsFilename);
+            _sr.Close();
+            _sr.Dispose();
+            File.Delete(saveDir + @"\preventFileDelete.tmp");
             Application.Current.Shutdown();
         }
 
@@ -462,7 +458,7 @@ namespace SoundBoard_UI
         /// </summary>
         private void sTimeToSave_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (recorder != null) recorder.RecordTime = (int)sTimeToSave.Value;
+            if (recorder != null) recorder.ChangeBufferSize((int)sTimeToSave.Value);
             lblSaveTime.Content = $"{(int)sTimeToSave.Value} sec";
         }
 
@@ -513,9 +509,10 @@ namespace SoundBoard_UI
 
                 if (wSoundProperties.ScutChanged)
                 {
+                    Debug.WriteLine($"Checking if is modifier: {(Key)wSoundProperties.HotKeys[0]} + {(Key)wSoundProperties.HotKeys[1]} + {(Key)wSoundProperties.HotKeys[2]}");
                     if (isModifier(wSoundProperties.HotKeys[0]) && isModifier(wSoundProperties.HotKeys[1]) && !isModifier(wSoundProperties.HotKeys[2]))
                     {
-                        CreateHotKey(wSoundProperties.HotKeys, rowIndex, false);
+                        CreateHotKey(new List<Key>() { (Key)wSoundProperties.HotKeys[0], (Key)wSoundProperties.HotKeys[1], (Key)wSoundProperties.HotKeys[2] }, rowIndex, false);
                         RemoveOldHotKeys();
                     }
                 }
@@ -607,6 +604,22 @@ namespace SoundBoard_UI
                 waveOut.Init(waveFileReader);
                 waveOut.Play();
                 Debug.WriteLine("Playing " + e.Name);
+            }
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Back)
+            {
+                if (dgSounds.SelectedIndex != -1)
+                {
+                    if (waveOut.PlaybackState == PlaybackState.Playing)
+                    {
+                        waveOut.Stop();
+                        waveFileReader.Dispose();
+                    }
+                    File.Delete((dgSounds.SelectedItem as Sound).Path);
+                }
             }
         }
 

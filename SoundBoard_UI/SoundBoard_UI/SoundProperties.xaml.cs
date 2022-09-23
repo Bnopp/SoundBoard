@@ -20,14 +20,14 @@ namespace SoundBoard_UI
     /// </summary>
     public partial class SoundProperties : Window
     {
-        private List<Key> hotKeys = new List<Key>();
+        private List<int> hotKeys = new List<int>();
         private int counter = 0;
         private bool keyListening = false;
         private bool txtChanged = false;
         private bool scutChanged = false;
         private string newFileName;
 
-        public List<Key> HotKeys { get { return hotKeys; } }
+        public List<int> HotKeys { get { return hotKeys; } }
         public bool TxtChanged { get { return txtChanged; } }
         public bool ScutChanged { get { return scutChanged; } }
         public string NewFileName { get { return newFileName; } }
@@ -75,10 +75,10 @@ namespace SoundBoard_UI
             {
                 Key key = e.Key;
 
-                if (!HotKeys.Contains(key) && key != Key.Enter && counter <= 3)
+                if (!HotKeys.Contains((int)key) && key != Key.Escape && counter <= 3)
                 {
                     if (HotKeys.Count == 0) lblShortcut.Content = "";
-                    HotKeys.Add(key);
+                    HotKeys.Add((int)key);
                     string scut = "";
                     switch (key)
                     {
@@ -115,7 +115,7 @@ namespace SoundBoard_UI
                     scutChanged = true;
                 }
             }
-            else if (e.Key == Key.Enter) this.Close();
+            else if (e.Key == Key.Escape) this.Close();
         }
 
         private void tbSoundName_GotFocus(object sender, RoutedEventArgs e)
@@ -135,7 +135,12 @@ namespace SoundBoard_UI
             {
                 keyListening = false;
                 (sender as Button).Content = "Set Shortcut";
-                hotKeys.Clear();
+                if (hotKeys.Count != 3)
+                {
+                    scutChanged = false;
+                    hotKeys.Clear();
+                    lblShortcut.Content = "No Shortcut";
+                }
             }
         }
     }

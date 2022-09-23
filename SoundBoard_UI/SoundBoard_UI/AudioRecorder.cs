@@ -10,7 +10,6 @@ namespace SoundBoard_UI
     {
         public WasapiLoopbackCapture LoopbackIn;
         public WaveInEvent MicIn;
-        public double RecordTime;
 
         public WaveBuffer wBuffer { get; set; }
         public int InputDeviceNb { get; set; }
@@ -22,7 +21,8 @@ namespace SoundBoard_UI
         private int _pos = 0;
         private byte[] _buffer;
         private bool _isRecording = false;
-        
+        private double RecordTime;
+
 
         public bool IsRecording { get { return _isRecording; } }
 
@@ -32,14 +32,18 @@ namespace SoundBoard_UI
         /// <param name="recordTime">Time to keep in the buffer (in seconds)</param>
         public AudioRecorder(double recordTime)
         {
-            RecordTime = recordTime;
             _wav.DeviceNumber = OutputDeviceNb;
             LoopbackIn = new WasapiLoopbackCapture();
             LoopbackIn.DataAvailable += DataAvailable;
             MicIn = new WaveInEvent();
             MicIn.DataAvailable += DataAvailable;
             MicIn.DeviceNumber = InputDeviceNb;
-            _buffer = new byte[(int)(LoopbackIn.WaveFormat.AverageBytesPerSecond * RecordTime)];
+            _buffer = new byte[(int)(LoopbackIn.WaveFormat.AverageBytesPerSecond * recordTime)];
+        }
+
+        public void ChangeBufferSize(int seconds)
+        {
+            _buffer = new byte[(int)(LoopbackIn.WaveFormat.AverageBytesPerSecond * seconds)];
         }
 
         /// <summary>
