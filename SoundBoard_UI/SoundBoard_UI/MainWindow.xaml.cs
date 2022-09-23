@@ -434,7 +434,16 @@ namespace SoundBoard_UI
         private void GridDouble_Click(object sender, MouseEventArgs e)
         {
             var grid = sender as DataGrid;
+
             if (grid.SelectedIndex != -1)
+            {
+                var rowIndex = grid.SelectedIndex;
+                var tmpSound = (grid.SelectedItem as Sound);
+                SoundProperties wSoundProperties = new SoundProperties(tmpSound.Name, tmpSound.Shortcut);
+                wSoundProperties.ShowDialog();
+            }
+
+            /*if (grid.SelectedIndex != -1)
             {
                 var cellIndex = grid.SelectedIndex;
                 SelectHotKeyWindow hotKeyWindow = new SelectHotKeyWindow();
@@ -448,7 +457,7 @@ namespace SoundBoard_UI
                         RemoveOldHotKeys();
                     }
                 }
-            }
+            }*/
         }
 
         /// <summary>

@@ -29,11 +29,15 @@
 
             <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="20,0,0,0">SoundBoard</TextBlock>
         </DockPanel>
-        <Grid >
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <StackPanel x:Name="spContainerLeft" Margin="20">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}">
@@ -70,6 +74,8 @@
                     <Canvas x:Name="cVisualiser" Height="100"/>
                 </Border>
             </StackPanel>
+
+            <Label Grid.Column="0" Grid.Row="1" Margin="20,0,0,10" Foreground="White" FontSize="8" Content="Copyright © Serghei Diulgherov - BnoppSoftware. All rights reserved."/>
 
             <StackPanel x:Name="spContainerRight" Grid.Column="1" Margin="20">
                 <DataGrid x:Name="dgSounds" IsReadOnly="True" Height="285"
