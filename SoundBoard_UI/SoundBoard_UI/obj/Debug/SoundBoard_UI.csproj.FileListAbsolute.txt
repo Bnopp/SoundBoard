@@ -59,13 +59,11 @@ C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Deb
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.csproj.AssemblyReference.cache
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.exe.config
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\MainWindow.g.cs
-C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SelectHotKeyWindow.g.cs
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\App.g.cs
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI_MarkupCompile.cache
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI_MarkupCompile.lref
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\App.baml
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\MainWindow.baml
-C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SelectHotKeyWindow.baml
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.g.resources
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.Properties.Resources.resources
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.csproj.GenerateResource.cache
@@ -73,8 +71,6 @@ C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Deb
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.csproj.CopyComplete
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.exe
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.pdb
-C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\RenameSound.g.cs
-C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\RenameSound.baml
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.csproj.SuggestedBindingRedirects.cache
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundProperties.g.cs
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundProperties.baml

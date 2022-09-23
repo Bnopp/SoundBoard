@@ -121,8 +121,6 @@ namespace SoundBoard_UI
             writer.Dispose();
 
             MainWindow window = Application.Current.Windows[0] as MainWindow;
-            window.lsSounds.Add(new Sound() { Name = Path.GetFileNameWithoutExtension(pathString), Shortcut = "none", Path = pathString });
-            window.dgSounds.Items.Refresh();
 
             Debug.WriteLine("File Saved!");
         }

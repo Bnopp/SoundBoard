@@ -73,12 +73,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="RenameSound.xaml.cs">
-      <DependentUpon>RenameSound.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SelectHotKeyWindow.xaml.cs">
-      <DependentUpon>SelectHotKeyWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="SoundProperties.xaml.cs">
@@ -97,14 +91,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="RenameSound.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SelectHotKeyWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="SoundProperties.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

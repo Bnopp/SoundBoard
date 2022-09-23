@@ -10,7 +10,11 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Title="SoundBoard" Height="450" Width="800"
-        Background="#131d25">
+        Background="#131d25"
+        AllowsTransparency="True">
+    <Window.Clip>
+        <RectangleGeometry Rect="0,0,800,450" RadiusX="10" RadiusY="10"/>
+    </Window.Clip>
     <DockPanel x:Name="RootWindow">
         <DockPanel x:Name="TitleBar" DockPanel.Dock="Top" Background="#282f3a"  MouseDown="TitleBar_MouseDown">
             <Button x:Name="CloseButton"
@@ -42,7 +46,7 @@
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="Margin" Value="0, 0, 0, 10"/>
-                        <Setter Property="Foreground" Value="#ffffff"/>
+                        <Setter Property="Foreground" Value="#e8ecf1"/>
                     </Style>
                     <Style TargetType="{x:Type ComboBoxItem}">
                         <Setter Property="Foreground" Value="#e8ecf1"/>
@@ -53,20 +57,35 @@
 
                 <ComboBox x:Name="cbPlayback" Height="25" Style="{StaticResource ComboBoxRoundedCornersStyle}"/>
 
-                <TextBlock Margin="0,10,0,0">Recording Device</TextBlock>
+                <Grid Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <!-- Set margin to 0,10,0,0 for textblock-->
+                    <TextBlock Grid.Row="0" Margin="0,0,0,0">Recording Device</TextBlock>
+                    <ComboBox Grid.Row="1" x:Name="cbRecording" Height="25" Margin="0, 10, 0, 0" Style="{StaticResource ComboBoxRoundedCornersStyle}"/>
+                    <Rectangle Fill="Black" Grid.Row="0" Grid.RowSpan="2" Opacity=".7"/>
+                    <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="Coming Soon..." Foreground="White" Grid.Row="0" Grid.RowSpan="2"/>
+                </Grid>
 
-                <ComboBox x:Name="cbRecording" Height="25" Margin="0, 10, 0, 0" Style="{StaticResource ComboBoxRoundedCornersStyle}"/>
-
-                <StackPanel x:Name="spAudioButtonsContainer" Orientation="Horizontal" Margin="0, 10, 0, 0" >
-                    <StackPanel.Resources>
+                <Grid x:Name="spAudioButtonsContainer" Margin="0, 10, 0, 0" >
+                    <Grid.Resources>
                         <Style TargetType="{x:Type Button}">
                             <Setter Property="Padding" Value="10"/>
                         </Style>
-                    </StackPanel.Resources>
-                    <Button x:Name="btnRecordingStart" Style="{DynamicResource MainButton}" Click="btnRecordingStart_Click" Content="Start" Margin="0,0,10,0"/>
-                    <Button x:Name="btnRecordingSave" Style="{StaticResource MainButton}" Click="btnRecordingSave_Click" Content="Save" Margin="10,0,10,0"/>
-                    <Button x:Name="btnSoundPlay" Style="{StaticResource MainButton}" Click="btnSoundPlay_Click" Content="Play" Margin="10,0,0,0"/>
-                </StackPanel>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="btnRecordingStart" Style="{DynamicResource MainButton}" Click="btnRecordingStart_Click" Content="Start" Margin="0,0,10,0" Grid.Column="0"/>
+                    <Button x:Name="btnRecordingSave" Style="{StaticResource MainButton}" Click="btnRecordingSave_Click" Content="Save" Margin="10,0,10,0" Grid.Column="1"/>
+                    <Button x:Name="btnSoundPlay" Style="{StaticResource MainButton}" Click="btnSoundPlay_Click" Content="Play" Margin="10,0,0,0" Grid.Column="2"/>
+                    <Label HorizontalAlignment="Right" x:Name="lblSaveTime" Content="5 sec" Foreground="#e8ecf1" Grid.Column="3"/>
+                </Grid>
 
                 <Slider x:Name="sTimeToSave" IsSnapToTickEnabled="True" TickFrequency="5" Minimum="5" Maximum="100" Margin="0,10,0,0" Value="5" ValueChanged="sTimeToSave_ValueChanged"/>
 

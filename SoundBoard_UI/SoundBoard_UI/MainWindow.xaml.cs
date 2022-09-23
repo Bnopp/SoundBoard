@@ -16,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 using Windows.ApplicationModel.VoiceCommands;
 using Windows.UI.Xaml.Controls;
 using Canvas = System.Windows.Controls.Canvas;
@@ -36,7 +37,10 @@ namespace SoundBoard_UI
         public List<Sound> lsSounds;
         public List<ArrayList> hotKeysToRemove = new List<ArrayList>();
 
+        private FileSystemWatcher _watcher;
         private AudioRecorder recorder;
+        private WaveOut waveOut;
+        private WaveFileReader waveFileReader;
         private string saveDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Soundboard\Sounds";
 
         private int M = 7;
@@ -63,8 +67,11 @@ namespace SoundBoard_UI
 
             for (int i = 0; i < Files.Length; i++)
             {
-                lsSounds.Add(new Sound() { Name = System.IO.Path.GetFileNameWithoutExtension(Files[i]), Shortcut = "none", Path = System.IO.Path.GetFullPath(Files[i]) });
-                Debug.WriteLine($"Loaded sound: {System.IO.Path.GetFileNameWithoutExtension(Files[i])}");
+                if (System.IO.Path.GetExtension(Files[i]) == ".wav")
+                {
+                    lsSounds.Add(new Sound() { Name = System.IO.Path.GetFileNameWithoutExtension(Files[i]), Shortcut = "No Shortcut", Path = System.IO.Path.GetFullPath(Files[i]) });
+                    Debug.WriteLine($"Loaded sound: {System.IO.Path.GetFileNameWithoutExtension(Files[i])}");
+                }
             }
 
             dgSounds.ItemsSource = lsSounds;
@@ -83,7 +90,13 @@ namespace SoundBoard_UI
                 Debug.WriteLine("Loaded saved settings");
             }
 
+            _watcher = new FileSystemWatcher(saveDir);
+            _watcher.Created += OnCreate;
+            _watcher.Deleted += OnDelete;
+            _watcher.EnableRaisingEvents = true;
+
             recorder = new AudioRecorder(10);
+            waveOut = new WaveOut();
             recorder.SavePath = saveDir;
             CompositionTarget.Rendering += CompositionTarget_Rendering;
 
@@ -230,11 +243,6 @@ namespace SoundBoard_UI
         public dynamic HotKeyExists(string name)
         {
             Debug.WriteLine($"Cheking if the HotKey for {name} already exists");
-            
-            /*foreach (Sound tmp in lsSounds)
-            {
-                Debug.WriteLine(tmp.Path);
-            }*/
 
             foreach (ArrayList list in this.Settings.SoundHotKeys)
             {
@@ -265,13 +273,12 @@ namespace SoundBoard_UI
             int count = 0;
             dgSounds.SelectedIndex = index;
             Sound tmpSound = dgSounds.SelectedItem as Sound;
-            Debug.WriteLine(tmpSound.Shortcut + "----------------");
 
             var checkExist = HotKeyExists(tmpSound.Path);
             if (!loadingSettings && checkExist is ArrayList) hotKeysToRemove.Add(checkExist);
 
             tmpSound.Shortcut = "";
-            List<Key> modifierKeys = new List<Key>();
+            List<ModifierKeys> modifierKeys = new List<ModifierKeys>();
             Key normalKey = Key.None;
             foreach (Key key in input)
             {
@@ -280,29 +287,29 @@ namespace SoundBoard_UI
                 normalKey variable. */
                 switch (key)
                 {
-                    case Key.LeftCtrl:
+                    case Key.LeftCtrl :
                         tmpSound.Shortcut += "LCtrl";
-                        modifierKeys.Add(key);
+                        modifierKeys.Add(ModifierKeys.Control);
                         break;
                     case Key.RightCtrl:
                         tmpSound.Shortcut += "RCtrl";
-                        modifierKeys.Add(key);
+                        modifierKeys.Add(ModifierKeys.Control);
                         break;
                     case Key.LeftAlt:
                         tmpSound.Shortcut += "LAlt";
-                        modifierKeys.Add(key);
+                        modifierKeys.Add(ModifierKeys.Alt);
                         break;
                     case Key.RightAlt:
                         tmpSound.Shortcut += "RAlt";
-                        modifierKeys.Add(key);
+                        modifierKeys.Add(ModifierKeys.Alt);
                         break;
                     case Key.LeftShift:
                         tmpSound.Shortcut += "LShift";
-                        modifierKeys.Add(key);
+                        modifierKeys.Add(ModifierKeys.Shift);
                         break;
                     case Key.RightShift:
                         tmpSound.Shortcut += "RShift";
-                        modifierKeys.Add(key);
+                        modifierKeys.Add(ModifierKeys.Shift);
                         break;
                     default:
                         tmpSound.Shortcut += key.ToString();
@@ -312,7 +319,7 @@ namespace SoundBoard_UI
                 count++;
                 if (count < input.Count) tmpSound.Shortcut += "+";
             }
-            HotkeyManager.Current.AddOrReplace(tmpSound.Path, normalKey, (ModifierKeys)modifierKeys[0] | (ModifierKeys)modifierKeys[1], PlaySound);
+            HotkeyManager.Current.AddOrReplace(tmpSound.Path, normalKey, modifierKeys[0] | modifierKeys[1], PlaySound);
             Debug.WriteLine("Created hotkey " + $"-     {tmpSound.Name} - {modifierKeys[0].ToString()}+{modifierKeys[1].ToString()}+{normalKey.ToString()}");
             if (!loadingSettings)
             {
@@ -369,6 +376,42 @@ namespace SoundBoard_UI
 
         #region Events
 
+        private void OnCreate(object sender, FileSystemEventArgs e)
+        {
+            string value = $"Created: {e.FullPath}";
+            Debug.WriteLine(value);
+            if (System.IO.Path.GetExtension(e.FullPath) == ".wav")
+            {
+                lsSounds.Add(new Sound() { Name = System.IO.Path.GetFileNameWithoutExtension(e.FullPath), Shortcut = "No Shortcut", Path = e.FullPath });
+                dgSounds.Dispatcher.Invoke(() => { dgSounds.Items.Refresh(); });
+
+                Debug.WriteLine($"Loaded sound: {System.IO.Path.GetFileNameWithoutExtension(e.FullPath)}");
+            }
+        }
+
+        private void OnDelete(object sender, FileSystemEventArgs e)
+        {
+            lsSounds.Clear();
+
+            string value = $"Deleted: {e.FullPath}";
+            Debug.WriteLine(value);
+
+            string[] Files = System.IO.Directory.GetFiles(saveDir);
+
+            for (int i = 0; i < Files.Length; i++)
+            {
+                if (System.IO.Path.GetExtension(Files[i]) == ".wav")
+                {
+                    lsSounds.Add(new Sound() { Name = System.IO.Path.GetFileNameWithoutExtension(Files[i]), Shortcut = "No Shortcut", Path = System.IO.Path.GetFullPath(Files[i]) });
+                    Debug.WriteLine($"Loaded sound: {System.IO.Path.GetFileNameWithoutExtension(Files[i])}");
+                }
+            }
+
+            dgSounds.Dispatcher.Invoke(() => { dgSounds.Items.Refresh(); });
+
+            Debug.WriteLine("Reloaded sounds");
+        }
+
         /// <summary>
         /// Start Recording Button_Clicked
         /// </summary>
@@ -399,12 +442,16 @@ namespace SoundBoard_UI
         /// </summary>
         private void btnSoundPlay_Click(object sender, RoutedEventArgs e)
         {
+            if(waveOut.PlaybackState == PlaybackState.Playing)
+            {
+                waveOut.Stop();
+                waveFileReader.Dispose();
+            }
             if (dgSounds.Items.Count > 0)
             {
-                var reader = new WaveFileReader(System.IO.Path.GetFullPath(lsSounds[dgSounds.SelectedIndex].Path));
-                var waveOut = new WaveOut();
+                waveFileReader = new WaveFileReader(System.IO.Path.GetFullPath(lsSounds[dgSounds.SelectedIndex].Path));
                 waveOut.DeviceNumber = cbPlayback.SelectedIndex;
-                waveOut.Init(reader);
+                waveOut.Init(waveFileReader);
                 waveOut.Play();
                 Debug.WriteLine("Playing " + dgSounds.SelectedIndex);
             }
@@ -416,6 +463,7 @@ namespace SoundBoard_UI
         private void sTimeToSave_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (recorder != null) recorder.RecordTime = (int)sTimeToSave.Value;
+            lblSaveTime.Content = $"{(int)sTimeToSave.Value} sec";
         }
 
         /// <summary>
@@ -441,23 +489,37 @@ namespace SoundBoard_UI
                 var tmpSound = (grid.SelectedItem as Sound);
                 SoundProperties wSoundProperties = new SoundProperties(tmpSound.Name, tmpSound.Shortcut);
                 wSoundProperties.ShowDialog();
-            }
-
-            /*if (grid.SelectedIndex != -1)
-            {
-                var cellIndex = grid.SelectedIndex;
-                SelectHotKeyWindow hotKeyWindow = new SelectHotKeyWindow();
-                hotKeyWindow.ShowDialog();
-
-                if (hotKeyWindow.HotKeys.Count == 3)
+                if (wSoundProperties.TxtChanged)
                 {
-                    if (isModifier(hotKeyWindow.HotKeys[0]) && isModifier(hotKeyWindow.HotKeys[1]) && !isModifier(hotKeyWindow.HotKeys[2]))
+                    string ext = System.IO.Path.GetExtension(tmpSound.Path);
+                    string directory = System.IO.Path.GetDirectoryName(tmpSound.Path);
+                    string newPath = directory + $@"\{wSoundProperties.NewFileName}" + ext;
+                    if (waveOut.PlaybackState == PlaybackState.Playing) waveOut.Stop();
+                    if (waveFileReader != null) waveFileReader.Dispose();
+                    File.Move(tmpSound.Path, newPath);
+                    foreach (ArrayList list in this.Settings.SoundHotKeys)
                     {
-                        CreateHotKey(hotKeyWindow.HotKeys, cellIndex, false);
+                        int index = lsSounds.FindIndex(a => a.Path == tmpSound.Path);
+                        if (index != -1 && tmpSound.Path == (string)list[0])
+                        {
+                            list[0] = newPath;
+                        }
+                    }
+                    tmpSound.Name = System.IO.Path.GetFileNameWithoutExtension(newPath);
+                    tmpSound.Path = newPath;
+                    grid.Items.Refresh();
+                    Debug.WriteLine($"File renamed from {tmpSound.Name} to {System.IO.Path.GetFileNameWithoutExtension(newPath)}");
+                }
+
+                if (wSoundProperties.ScutChanged)
+                {
+                    if (isModifier(wSoundProperties.HotKeys[0]) && isModifier(wSoundProperties.HotKeys[1]) && !isModifier(wSoundProperties.HotKeys[2]))
+                    {
+                        CreateHotKey(wSoundProperties.HotKeys, rowIndex, false);
                         RemoveOldHotKeys();
                     }
                 }
-            }*/
+            }
         }
 
         /// <summary>
@@ -533,14 +595,18 @@ namespace SoundBoard_UI
         /// </summary>
         private void PlaySound(object Sender, HotkeyEventArgs e)
         {
+            if (waveOut.PlaybackState == PlaybackState.Playing)
+            {
+                waveOut.Stop();
+                waveFileReader.Dispose();
+            }
             if (dgSounds.Items.Count > 0)
             {
-                var reader = new WaveFileReader(System.IO.Path.GetFullPath(e.Name));
-                var waveOut = new WaveOut();
+                waveFileReader = new WaveFileReader(System.IO.Path.GetFullPath(e.Name));
                 waveOut.DeviceNumber = cbPlayback.SelectedIndex;
-                waveOut.Init(reader);
+                waveOut.Init(waveFileReader);
                 waveOut.Play();
-                Debug.WriteLine("Playing " + dgSounds.SelectedIndex);
+                Debug.WriteLine("Playing " + e.Name);
             }
         }
 
