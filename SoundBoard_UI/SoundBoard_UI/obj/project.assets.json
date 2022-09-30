@@ -22,10 +22,14 @@
           "System.ValueTuple": "4.5.0"
         },
         "compile": {
-          "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll": {}
+          "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll": {
+            "related": ".pdb;.xml"
+          }
         },
         "runtime": {
-          "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll": {}
+          "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll": {
+            "related": ".pdb;.xml"
+          }
         }
       },
       "Microsoft.Win32.Registry/5.0.0": {
@@ -38,10 +42,14 @@
           "mscorlib"
         ],
         "compile": {
-          "ref/net461/Microsoft.Win32.Registry.dll": {}
+          "ref/net461/Microsoft.Win32.Registry.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net461/Microsoft.Win32.Registry.dll": {}
+          "lib/net461/Microsoft.Win32.Registry.dll": {
+            "related": ".xml"
+          }
         },
         "runtimeTargets": {
           "runtimes/win/lib/net461/Microsoft.Win32.Registry.dll": {
@@ -164,10 +172,14 @@
           "NAudio.WinMM": "2.1.0"
         },
         "compile": {
-          "lib/net472/NAudio.dll": {}
+          "lib/net472/NAudio.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net472/NAudio.dll": {}
+          "lib/net472/NAudio.dll": {
+            "related": ".xml"
+          }
         }
       },
       "NAudio.Asio/2.1.0": {
@@ -244,10 +256,14 @@
       "NHotkey/2.1.0": {
         "type": "package",
         "compile": {
-          "lib/net45/NHotkey.dll": {}
+          "lib/net45/NHotkey.dll": {
+            "related": ".pdb"
+          }
         },
         "runtime": {
-          "lib/net45/NHotkey.dll": {}
+          "lib/net45/NHotkey.dll": {
+            "related": ".pdb"
+          }
         }
       },
       "NHotkey.Wpf/2.1.0": {
@@ -256,10 +272,14 @@
           "NHotkey": "2.1.0"
         },
         "compile": {
-          "lib/net45/NHotkey.Wpf.dll": {}
+          "lib/net45/NHotkey.Wpf.dll": {
+            "related": ".pdb"
+          }
         },
         "runtime": {
-          "lib/net45/NHotkey.Wpf.dll": {}
+          "lib/net45/NHotkey.Wpf.dll": {
+            "related": ".pdb"
+          }
         }
       },
       "System.Runtime.InteropServices.WindowsRuntime/4.3.0": {
@@ -304,10 +324,14 @@
           "System.Security.Principal.Windows": "5.0.0"
         },
         "compile": {
-          "lib/net461/System.Security.AccessControl.dll": {}
+          "lib/net461/System.Security.AccessControl.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net461/System.Security.AccessControl.dll": {}
+          "lib/net461/System.Security.AccessControl.dll": {
+            "related": ".xml"
+          }
         },
         "runtimeTargets": {
           "runtimes/win/lib/net461/System.Security.AccessControl.dll": {
@@ -323,10 +347,14 @@
           "mscorlib"
         ],
         "compile": {
-          "ref/net461/System.Security.Principal.Windows.dll": {}
+          "ref/net461/System.Security.Principal.Windows.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net461/System.Security.Principal.Windows.dll": {}
+          "lib/net461/System.Security.Principal.Windows.dll": {
+            "related": ".xml"
+          }
         },
         "runtimeTargets": {
           "runtimes/win/lib/net461/System.Security.Principal.Windows.dll": {
@@ -344,7 +372,9 @@
           "ref/net47/System.ValueTuple.dll": {}
         },
         "runtime": {
-          "lib/net47/System.ValueTuple.dll": {}
+          "lib/net47/System.ValueTuple.dll": {
+            "related": ".xml"
+          }
         }
       }
     },
@@ -369,10 +399,14 @@
           "System.ValueTuple": "4.5.0"
         },
         "compile": {
-          "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll": {}
+          "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll": {
+            "related": ".pdb;.xml"
+          }
         },
         "runtime": {
-          "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll": {}
+          "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll": {
+            "related": ".pdb;.xml"
+          }
         }
       },
       "Microsoft.Win32.Registry/5.0.0": {
@@ -385,10 +419,14 @@
           "mscorlib"
         ],
         "compile": {
-          "ref/net461/Microsoft.Win32.Registry.dll": {}
+          "ref/net461/Microsoft.Win32.Registry.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "runtimes/win/lib/net461/Microsoft.Win32.Registry.dll": {}
+          "runtimes/win/lib/net461/Microsoft.Win32.Registry.dll": {
+            "related": ".xml"
+          }
         }
       },
       "Microsoft.Windows.SDK.Contracts/10.0.22621.2": {
@@ -505,10 +543,14 @@
           "NAudio.WinMM": "2.1.0"
         },
         "compile": {
-          "lib/net472/NAudio.dll": {}
+          "lib/net472/NAudio.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net472/NAudio.dll": {}
+          "lib/net472/NAudio.dll": {
+            "related": ".xml"
+          }
         }
       },
       "NAudio.Asio/2.1.0": {
@@ -585,10 +627,14 @@
       "NHotkey/2.1.0": {
         "type": "package",
         "compile": {
-          "lib/net45/NHotkey.dll": {}
+          "lib/net45/NHotkey.dll": {
+            "related": ".pdb"
+          }
         },
         "runtime": {
-          "lib/net45/NHotkey.dll": {}
+          "lib/net45/NHotkey.dll": {
+            "related": ".pdb"
+          }
         }
       },
       "NHotkey.Wpf/2.1.0": {
@@ -597,10 +643,14 @@
           "NHotkey": "2.1.0"
         },
         "compile": {
-          "lib/net45/NHotkey.Wpf.dll": {}
+          "lib/net45/NHotkey.Wpf.dll": {
+            "related": ".pdb"
+          }
         },
         "runtime": {
-          "lib/net45/NHotkey.Wpf.dll": {}
+          "lib/net45/NHotkey.Wpf.dll": {
+            "related": ".pdb"
+          }
         }
       },
       "System.Runtime.InteropServices.WindowsRuntime/4.3.0": {
@@ -645,10 +695,14 @@
           "System.Security.Principal.Windows": "5.0.0"
         },
         "compile": {
-          "lib/net461/System.Security.AccessControl.dll": {}
+          "lib/net461/System.Security.AccessControl.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "runtimes/win/lib/net461/System.Security.AccessControl.dll": {}
+          "runtimes/win/lib/net461/System.Security.AccessControl.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.Security.Principal.Windows/5.0.0": {
@@ -658,10 +712,14 @@
           "mscorlib"
         ],
         "compile": {
-          "ref/net461/System.Security.Principal.Windows.dll": {}
+          "ref/net461/System.Security.Principal.Windows.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "runtimes/win/lib/net461/System.Security.Principal.Windows.dll": {}
+          "runtimes/win/lib/net461/System.Security.Principal.Windows.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.ValueTuple/4.5.0": {
@@ -673,7 +731,9 @@
           "ref/net47/System.ValueTuple.dll": {}
         },
         "runtime": {
-          "lib/net47/System.ValueTuple.dll": {}
+          "lib/net47/System.ValueTuple.dll": {
+            "related": ".xml"
+          }
         }
       }
     },
@@ -698,10 +758,14 @@
           "System.ValueTuple": "4.5.0"
         },
         "compile": {
-          "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll": {}
+          "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll": {
+            "related": ".pdb;.xml"
+          }
         },
         "runtime": {
-          "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll": {}
+          "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll": {
+            "related": ".pdb;.xml"
+          }
         }
       },
       "Microsoft.Win32.Registry/5.0.0": {
@@ -714,10 +778,14 @@
           "mscorlib"
         ],
         "compile": {
-          "ref/net461/Microsoft.Win32.Registry.dll": {}
+          "ref/net461/Microsoft.Win32.Registry.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net461/Microsoft.Win32.Registry.dll": {}
+          "lib/net461/Microsoft.Win32.Registry.dll": {
+            "related": ".xml"
+          }
         }
       },
       "Microsoft.Windows.SDK.Contracts/10.0.22621.2": {
@@ -834,10 +902,14 @@
           "NAudio.WinMM": "2.1.0"
         },
         "compile": {
-          "lib/net472/NAudio.dll": {}
+          "lib/net472/NAudio.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net472/NAudio.dll": {}
+          "lib/net472/NAudio.dll": {
+            "related": ".xml"
+          }
         }
       },
       "NAudio.Asio/2.1.0": {
@@ -914,10 +986,14 @@
       "NHotkey/2.1.0": {
         "type": "package",
         "compile": {
-          "lib/net45/NHotkey.dll": {}
+          "lib/net45/NHotkey.dll": {
+            "related": ".pdb"
+          }
         },
         "runtime": {
-          "lib/net45/NHotkey.dll": {}
+          "lib/net45/NHotkey.dll": {
+            "related": ".pdb"
+          }
         }
       },
       "NHotkey.Wpf/2.1.0": {
@@ -926,10 +1002,14 @@
           "NHotkey": "2.1.0"
         },
         "compile": {
-          "lib/net45/NHotkey.Wpf.dll": {}
+          "lib/net45/NHotkey.Wpf.dll": {
+            "related": ".pdb"
+          }
         },
         "runtime": {
-          "lib/net45/NHotkey.Wpf.dll": {}
+          "lib/net45/NHotkey.Wpf.dll": {
+            "related": ".pdb"
+          }
         }
       },
       "System.Runtime.InteropServices.WindowsRuntime/4.3.0": {
@@ -974,10 +1054,14 @@
           "System.Security.Principal.Windows": "5.0.0"
         },
         "compile": {
-          "lib/net461/System.Security.AccessControl.dll": {}
+          "lib/net461/System.Security.AccessControl.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net461/System.Security.AccessControl.dll": {}
+          "lib/net461/System.Security.AccessControl.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.Security.Principal.Windows/5.0.0": {
@@ -987,10 +1071,14 @@
           "mscorlib"
         ],
         "compile": {
-          "ref/net461/System.Security.Principal.Windows.dll": {}
+          "ref/net461/System.Security.Principal.Windows.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net461/System.Security.Principal.Windows.dll": {}
+          "lib/net461/System.Security.Principal.Windows.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.ValueTuple/4.5.0": {
@@ -1002,7 +1090,9 @@
           "ref/net47/System.ValueTuple.dll": {}
         },
         "runtime": {
-          "lib/net47/System.ValueTuple.dll": {}
+          "lib/net47/System.ValueTuple.dll": {
+            "related": ".xml"
+          }
         }
       }
     },
@@ -1027,10 +1117,14 @@
           "System.ValueTuple": "4.5.0"
         },
         "compile": {
-          "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll": {}
+          "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll": {
+            "related": ".pdb;.xml"
+          }
         },
         "runtime": {
-          "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll": {}
+          "lib/net461/Microsoft.Toolkit.Uwp.Notifications.dll": {
+            "related": ".pdb;.xml"
+          }
         }
       },
       "Microsoft.Win32.Registry/5.0.0": {
@@ -1043,10 +1137,14 @@
           "mscorlib"
         ],
         "compile": {
-          "ref/net461/Microsoft.Win32.Registry.dll": {}
+          "ref/net461/Microsoft.Win32.Registry.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net461/Microsoft.Win32.Registry.dll": {}
+          "lib/net461/Microsoft.Win32.Registry.dll": {
+            "related": ".xml"
+          }
         }
       },
       "Microsoft.Windows.SDK.Contracts/10.0.22621.2": {
@@ -1163,10 +1261,14 @@
           "NAudio.WinMM": "2.1.0"
         },
         "compile": {
-          "lib/net472/NAudio.dll": {}
+          "lib/net472/NAudio.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net472/NAudio.dll": {}
+          "lib/net472/NAudio.dll": {
+            "related": ".xml"
+          }
         }
       },
       "NAudio.Asio/2.1.0": {
@@ -1243,10 +1345,14 @@
       "NHotkey/2.1.0": {
         "type": "package",
         "compile": {
-          "lib/net45/NHotkey.dll": {}
+          "lib/net45/NHotkey.dll": {
+            "related": ".pdb"
+          }
         },
         "runtime": {
-          "lib/net45/NHotkey.dll": {}
+          "lib/net45/NHotkey.dll": {
+            "related": ".pdb"
+          }
         }
       },
       "NHotkey.Wpf/2.1.0": {
@@ -1255,10 +1361,14 @@
           "NHotkey": "2.1.0"
         },
         "compile": {
-          "lib/net45/NHotkey.Wpf.dll": {}
+          "lib/net45/NHotkey.Wpf.dll": {
+            "related": ".pdb"
+          }
         },
         "runtime": {
-          "lib/net45/NHotkey.Wpf.dll": {}
+          "lib/net45/NHotkey.Wpf.dll": {
+            "related": ".pdb"
+          }
         }
       },
       "System.Runtime.InteropServices.WindowsRuntime/4.3.0": {
@@ -1303,10 +1413,14 @@
           "System.Security.Principal.Windows": "5.0.0"
         },
         "compile": {
-          "lib/net461/System.Security.AccessControl.dll": {}
+          "lib/net461/System.Security.AccessControl.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net461/System.Security.AccessControl.dll": {}
+          "lib/net461/System.Security.AccessControl.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.Security.Principal.Windows/5.0.0": {
@@ -1316,10 +1430,14 @@
           "mscorlib"
         ],
         "compile": {
-          "ref/net461/System.Security.Principal.Windows.dll": {}
+          "ref/net461/System.Security.Principal.Windows.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/net461/System.Security.Principal.Windows.dll": {}
+          "lib/net461/System.Security.Principal.Windows.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.ValueTuple/4.5.0": {
@@ -1331,7 +1449,9 @@
           "ref/net47/System.ValueTuple.dll": {}
         },
         "runtime": {
-          "lib/net47/System.ValueTuple.dll": {}
+          "lib/net47/System.ValueTuple.dll": {
+            "related": ".xml"
+          }
         }
       }
     }
@@ -2494,24 +2614,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\sergh\\.nuget\\packages\\": {},
+    "C:\\Users\\pl03jlu\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sergh\\Documents\\GitHub\\SoundBoard\\SoundBoard_UI\\SoundBoard_UI\\SoundBoard_UI.csproj",
+      "projectUniqueName": "C:\\Users\\pl03jlu\\Documents\\GitHub\\SoundBoard\\SoundBoard_UI\\SoundBoard_UI\\SoundBoard_UI.csproj",
       "projectName": "SoundBoard_UI",
-      "projectPath": "C:\\Users\\sergh\\Documents\\GitHub\\SoundBoard\\SoundBoard_UI\\SoundBoard_UI\\SoundBoard_UI.csproj",
-      "packagesPath": "C:\\Users\\sergh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sergh\\Documents\\GitHub\\SoundBoard\\SoundBoard_UI\\SoundBoard_UI\\obj\\",
+      "projectPath": "C:\\Users\\pl03jlu\\Documents\\GitHub\\SoundBoard\\SoundBoard_UI\\SoundBoard_UI\\SoundBoard_UI.csproj",
+      "packagesPath": "C:\\Users\\pl03jlu\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\pl03jlu\\Documents\\GitHub\\SoundBoard\\SoundBoard_UI\\SoundBoard_UI\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\sergh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\pl03jlu\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],

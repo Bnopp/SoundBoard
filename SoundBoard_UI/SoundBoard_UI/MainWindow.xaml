@@ -9,15 +9,15 @@
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        Title="SoundBoard" Height="450" Width="800"
-        Background="#131d25"
+        Title="SoundBoard" Height="415" Width="850"
+        Background="{StaticResource BackgroundColorLight}"
         AllowsTransparency="True"
         KeyDown="Window_KeyDown">
     <Window.Clip>
-        <RectangleGeometry Rect="0,0,800,450" RadiusX="10" RadiusY="10"/>
+        <RectangleGeometry Rect="0,0,850,415" RadiusX="10" RadiusY="10"/>
     </Window.Clip>
     <DockPanel x:Name="RootWindow">
-        <DockPanel x:Name="TitleBar" DockPanel.Dock="Top" Background="#282f3a"  MouseDown="TitleBar_MouseDown">
+        <DockPanel x:Name="TitleBar" DockPanel.Dock="Top" Background="{StaticResource BorderColorLight}"  MouseDown="TitleBar_MouseDown">
             <Button x:Name="CloseButton"
                     Style="{StaticResource TitleButton}"
                     Click="CloseButton_Click"
@@ -32,7 +32,7 @@
                 <Ellipse x:Name="eMinimize" Width="10" Height="10" Fill="#f5c34e"/>
             </Button>
 
-            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="20,0,0,0">SoundBoard</TextBlock>
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{StaticResource ForegroundColorLight}" Margin="20,0,0,0">SoundBoard</TextBlock>
         </DockPanel>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -54,21 +54,13 @@
                     </Style>
                 </StackPanel.Resources>
 
-                <TextBlock>Playback Device</TextBlock>
+                <TextBlock Foreground="{StaticResource ForegroundColorLight}" FontSize="14" FontWeight="SemiBold">Playback Device</TextBlock>
 
-                <ComboBox x:Name="cbPlayback" Height="25" Style="{StaticResource ComboBoxRoundedCornersStyle}"/>
+                <ComboBox x:Name="cbPlayback" Height="30" Style="{StaticResource ComboBoxRoundedCornersStyle}"/>
 
-                <Grid Margin="0,10,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <!-- Set margin to 0,10,0,0 for textblock-->
-                    <TextBlock Grid.Row="0" Margin="0,0,0,0">Recording Device</TextBlock>
-                    <ComboBox Grid.Row="1" x:Name="cbRecording" Height="25" Margin="0, 10, 0, 0" Style="{StaticResource ComboBoxRoundedCornersStyle}"/>
-                    <Rectangle Fill="Black" Grid.Row="0" Grid.RowSpan="2" Opacity=".7"/>
-                    <Label HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="Coming Soon..." Foreground="White" Grid.Row="0" Grid.RowSpan="2"/>
-                </Grid>
+                <!-- Set margin to 0,10,0,0 for textblock-->
+                <TextBlock Foreground="{StaticResource ForegroundColorLight}" FontSize="14" FontWeight="SemiBold" Grid.Row="0" Margin="0,10,0,0">Recording Device</TextBlock>
+                <ComboBox Grid.Row="1" x:Name="cbRecording" Height="30" Margin="0, 10, 0, 0" Style="{StaticResource ComboBoxRoundedCornersStyle}"/>
 
                 <Grid x:Name="spAudioButtonsContainer" Margin="0, 10, 0, 0" >
                     <Grid.Resources>
@@ -82,23 +74,35 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="btnRecordingStart" Style="{DynamicResource MainButton}" Click="btnRecordingStart_Click" Content="Start" Margin="0,0,10,0" Grid.Column="0"/>
-                    <Button x:Name="btnRecordingSave" Style="{StaticResource MainButton}" Click="btnRecordingSave_Click" Content="Save" Margin="10,0,10,0" Grid.Column="1"/>
-                    <Button x:Name="btnSoundPlay" Style="{StaticResource MainButton}" Click="btnSoundPlay_Click" Content="Play" Margin="10,0,0,0" Grid.Column="2"/>
-                    <Label HorizontalAlignment="Right" x:Name="lblSaveTime" Content="5 sec" Foreground="#e8ecf1" Grid.Column="3"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"/>
+                    </Grid.RowDefinitions>
+                    <Canvas Grid.Column="0">
+                        <Button x:Name="btnRecordingStart" Style="{DynamicResource MainButtonLight}" Click="btnRecordingStart_Click" Content="Start"/>
+                    </Canvas>
+                    <Canvas Grid.Column="1">
+                        <Button x:Name="btnRecordingSave" Style="{StaticResource MainButtonLight}" Background="{StaticResource ReverseAccentGradient}" Click="btnRecordingSave_Click" Content="Save" Margin="10,0,10,0"/>
+                    </Canvas>
+                    <Canvas Grid.Column="2">
+                        <Button x:Name="btnSoundPlay" Style="{StaticResource MainButtonLight}" Click="btnSoundPlay_Click" Content="Play" Margin="20,0,0,0" />
+                    </Canvas>    
+                    <Label HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" x:Name="lblSaveTime" Padding="0" Content="5 sec" FontWeight="DemiBold" FontSize="14" Foreground="{StaticResource ForegroundColorLight}" Grid.Column="3"/>
                 </Grid>
 
                 <Slider x:Name="sTimeToSave" IsSnapToTickEnabled="True" TickFrequency="5" Minimum="5" Maximum="100" Margin="0,10,0,0" Value="5" ValueChanged="sTimeToSave_ValueChanged"/>
 
-                <Border Background="#292f3a" BorderBrush="Transparent" CornerRadius="5" BorderThickness="1" Margin="0,10,0,0">
+                <Border Background="#FFFFFF" BorderBrush="{StaticResource BorderColorLight}" CornerRadius="5" BorderThickness="1" Margin="0,10,0,0">
+                    <Border.Effect>
+                        <DropShadowEffect Color="DarkGray" Direction="-55" Opacity="0.3" BlurRadius="15" ShadowDepth="5" />
+                    </Border.Effect>
                     <Canvas x:Name="cVisualiser" Height="100"/>
                 </Border>
             </StackPanel>
 
-            <Label Grid.Column="0" Grid.Row="1" Margin="20,0,0,10" Foreground="White" FontSize="12" Content="Copyright © Serghei Diulgherov - BnoppSoftware. All rights reserved."/>
+            <Label Grid.Column="0" Grid.Row="1" Margin="20,0,0,10" Foreground="{StaticResource ForegroundColorLight}" FontSize="12" Content="Copyright © Serghei Diulgherov - BnoppSoftware. All rights reserved."/>
 
             <StackPanel x:Name="spContainerRight" Grid.Column="1" Margin="20">
-                <DataGrid x:Name="dgSounds" IsReadOnly="True" Height="285"
+                <DataGrid x:Name="dgSounds" IsReadOnly="True" Height="310"
                       CanUserResizeColumns="False" 
                       CanUserResizeRows="False" 
                       CanUserReorderColumns="False" 
