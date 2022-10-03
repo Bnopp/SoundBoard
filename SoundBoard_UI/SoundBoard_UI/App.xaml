@@ -4,327 +4,250 @@
              xmlns:local="clr-namespace:SoundBoard_UI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <ResourceDictionary>
-            <SolidColorBrush x:Key="BackgroundColorLight">#FFFFFF</SolidColorBrush>
-            <SolidColorBrush x:Key="ForegroundColorLight">#040415</SolidColorBrush>
-            <SolidColorBrush x:Key="BorderColorLight">#E3DFDF</SolidColorBrush>
-            <LinearGradientBrush x:Key="AccentGradient">
-                <GradientStop Color="#FF602C" Offset="0"/>
-                <GradientStop Color="#FF05FF" Offset="1"/>
-            </LinearGradientBrush>
-            <LinearGradientBrush x:Key="ReverseAccentGradient">
-                <GradientStop Color="#FF602C" Offset="1"/>
-                <GradientStop Color="#FF05FF" Offset="0"/>
-            </LinearGradientBrush>
-            <!-- Custom ComboBox-->
-            <Style x:Key="ComboBoxButtonStyle" TargetType="{x:Type ToggleButton}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type ToggleButton}">
-                            <Border x:Name="border"   
-                                            Background="{StaticResource AccentGradient}"   
-                                            CornerRadius="10,10,10,10" Height="30">
-                                <Border.Effect>
-                                    <DropShadowEffect Color="DarkGray" Direction="-55" Opacity="0.3" BlurRadius="15" ShadowDepth="5" />
-                                </Border.Effect>
-                                <ContentPresenter />
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style x:Key="ComboBoxRoundedCornersStyle" TargetType="{x:Type ComboBox}">
-                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                <Setter Property="Foreground" Value="#FFFFFF"/>
-                <Setter Property="FontWeight" Value="SemiBold"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type ComboBox}">
-                            <Grid>
-                                <ToggleButton Margin="0"  
-                                                      Height="{TemplateBinding Height}"  
-                                                      Style="{StaticResource ComboBoxButtonStyle}"  
-                                                      Focusable="False"  
-                                                      IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                      ClickMode="Press">
-                                    <Path Grid.Column="1"  
-                                                  HorizontalAlignment="Right"  
-                                                  VerticalAlignment="Center"  
-                                                  Data="M 0 0 L 4 4 L 8 0 Z"  
-                                                  Fill="#e8ecf1"
-                                                  Margin="0,0,5,0"/>
-                                </ToggleButton>
-                                <ContentPresenter Name="ContentSite"  
-                                                          Content="{TemplateBinding SelectionBoxItem}"  
-                                                          ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"  
-                                                          ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"  
-                                                          VerticalAlignment="Center"  
-                                                          HorizontalAlignment="Left"  
-                                                          Margin="5,0,0,0"/>
-                                <Popup Name="Popup"  
-                                               Placement="Bottom"  
-                                               IsOpen="{TemplateBinding IsDropDownOpen}"  
-                                               AllowsTransparency="True"   
-                                               Focusable="False"  
-                                               PopupAnimation="Slide">
-                                    <Grid Name="DropDown"  
-                                                  SnapsToDevicePixels="True"          
-                                                  MinWidth="{TemplateBinding ActualWidth}"  
-                                                  MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                        <Border x:Name="DropDownBorder"  
-                                                        BorderThickness="1"  
-                                                        CornerRadius="5"  
-                                                        BorderBrush="{StaticResource BorderColorLight}"
-                                                        Background="#FFFFFF"/>
-                                        <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
-                                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
-                                        </ScrollViewer>
-                                    </Grid>
-                                </Popup>
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+        <!-- Custom ComboBox-->
+        <Style x:Key="ComboBoxButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border x:Name="border"   
+                                        Background="#4854ac"   
+                                        CornerRadius="5,5,5,5"   
+                                        BorderThickness="0"  
+                                        BorderBrush="#b4004e">
+                            <ContentPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ComboBoxRoundedCornersStyle" TargetType="{x:Type ComboBox}">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="#e8ecf1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBox}">
+                        <Grid>
+                            <ToggleButton Margin="0"  
+                                                  Height="{TemplateBinding Height}"  
+                                                  Style="{StaticResource ComboBoxButtonStyle}"  
+                                                  Focusable="False"  
+                                                  IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                  ClickMode="Press">
+                                <Path Grid.Column="1"  
+                                              HorizontalAlignment="Right"  
+                                              VerticalAlignment="Center"  
+                                              Data="M 0 0 L 4 4 L 8 0 Z"  
+                                              Fill="#e8ecf1"
+                                              Margin="0,0,5,0"/>
+                            </ToggleButton>
+                            <ContentPresenter Name="ContentSite"  
+                                                      Content="{TemplateBinding SelectionBoxItem}"  
+                                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"  
+                                                      ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"  
+                                                      VerticalAlignment="Center"  
+                                                      HorizontalAlignment="Left"  
+                                                      Margin="5,0,0,0"/>
+                            <Popup Name="Popup"  
+                                           Placement="Bottom"  
+                                           IsOpen="{TemplateBinding IsDropDownOpen}"  
+                                           AllowsTransparency="True"   
+                                           Focusable="False"  
+                                           PopupAnimation="Slide">
+                                <Grid Name="DropDown"  
+                                              SnapsToDevicePixels="True"          
+                                              MinWidth="{TemplateBinding ActualWidth}"  
+                                              MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder"  
+                                                    BorderThickness="0"  
+                                                    CornerRadius="5"  
+                                                    BorderBrush="Black"
+                                                    Background="#263365"/>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         
-            <!-- Custom Buttons-->
-
-            <Style TargetType="Button" x:Key="ClearButton">
-                <Setter Property="TextBlock.TextAlignment" Value="Center"/>
-                <Setter Property="Height" Value="25"/>
-                <Setter Property="Foreground" Value="#e8ecf1"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Border.Background}"
-                                    CornerRadius="{TemplateBinding Border.CornerRadius}">
-                                <ContentPresenter x:Name="contentPresenter"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}" 
-                                          Content="{TemplateBinding Content}" 
-                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                          Margin="{TemplateBinding Padding}" 
-                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <Style TargetType="Button" x:Key="TitleButton" BasedOn="{StaticResource ClearButton}">
-                <Setter Property="Background" Value="Transparent"/>
-            </Style>
-            <Style TargetType="Button" x:Key="MainButtonLight" BasedOn="{StaticResource ClearButton}">
-                <Setter Property="Background" Value="{StaticResource AccentGradient}"/>
-                <Setter Property="Foreground" Value="{StaticResource BackgroundColorLight}"/>
-                <Setter Property="FontWeight" Value="Bold"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="Height" Value="35"/>
-                <Setter Property="Width" Value="100"/>
-                <Setter Property="Border.CornerRadius" Value="10"/>
-                <Setter Property="Padding" Value="10, 0, 10, 0"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Border.Background}"
-                                    CornerRadius="{TemplateBinding Border.CornerRadius}">
-                                <Border.Effect>
-                                    <DropShadowEffect Color="DarkGray" Direction="-55" Opacity="0.3" BlurRadius="15" ShadowDepth="5" />
-                                </Border.Effect>
-                                <ContentPresenter x:Name="contentPresenter"
+        <!-- Custom Buttons-->
+        
+        <Style TargetType="Button" x:Key="ClearButton">
+            <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Foreground" Value="#e8ecf1"/>
+            
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Border.Background}"
+                                CornerRadius="{TemplateBinding Border.CornerRadius}">
+                            <ContentPresenter x:Name="contentPresenter"
                                       ContentTemplate="{TemplateBinding ContentTemplate}" 
                                       Content="{TemplateBinding Content}" 
                                       HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       Margin="{TemplateBinding Padding}" 
                                       VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Style.Triggers>
-                    <EventTrigger RoutedEvent="Button.MouseEnter">
-                        <EventTrigger.Actions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation
-                                    Storyboard.TargetProperty="(Button.Opacity)"
-                                    From="1.0" To="0.5" Duration="0:0:0.1"/>
-                                    <DoubleAnimation Storyboard.TargetProperty="(Canvas.Left)"
-                                                     From="0" To="2" Duration="0:0:0.2"/>
-                                    <DoubleAnimation Storyboard.TargetProperty="(Canvas.Top)"
-                                                     From="0" To="-2" Duration="0:0:0.2"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger.Actions>
-                    </EventTrigger>
-                    <EventTrigger RoutedEvent="Button.MouseLeave">
-                        <EventTrigger.Actions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation
-                                    Storyboard.TargetProperty="(Button.Opacity)"
-                                    To="1" Duration="0:0:0.1" />
-                                    <DoubleAnimation Storyboard.TargetProperty="(Canvas.Left)"
-                                                     From="2" To="0" Duration="0:0:0.2"/>
-                                    <DoubleAnimation Storyboard.TargetProperty="(Canvas.Top)"
-                                                     From="-2" To="0" Duration="0:0:0.2"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger.Actions>
-                    </EventTrigger>
-                    <EventTrigger RoutedEvent="Button.Click">
-                        <EventTrigger.Actions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation 
-                                    Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
-                                    From="#4854ac" To="White" Duration="0:0:0.15" AutoReverse="True" />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger.Actions>
-                    </EventTrigger>
-                </Style.Triggers>
-            </Style>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Button" x:Key="TitleButton" BasedOn="{StaticResource ClearButton}">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        <Style TargetType="Button" x:Key="MainButton" BasedOn="{StaticResource ClearButton}">
+            <Setter Property="Background" Value="#4854ac"/>
+            <Setter Property="Border.CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="10, 0, 10, 0"/>
+            <Style.Triggers>
 
-            <Style TargetType="Button" x:Key="MainButton" BasedOn="{StaticResource ClearButton}">
-                <Setter Property="Background" Value="#4854ac"/>
-                <Setter Property="Border.CornerRadius" Value="5"/>
-                <Setter Property="Padding" Value="10, 0, 10, 0"/>
-                <Style.Triggers>
-                    <EventTrigger RoutedEvent="Button.MouseEnter">
-                        <EventTrigger.Actions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation
-                                    Storyboard.TargetProperty="(Button.Opacity)"
-                                    From="1.0" To="0.5" Duration="0:0:0.1"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger.Actions>
-                    </EventTrigger>
-                    <EventTrigger RoutedEvent="Button.MouseLeave">
-                        <EventTrigger.Actions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation
-                                    Storyboard.TargetProperty="(Button.Opacity)"
-                                    To="1" Duration="0:0:0.1" />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger.Actions>
-                    </EventTrigger>
-                    <EventTrigger RoutedEvent="Button.Click">
-                        <EventTrigger.Actions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation 
-                                    Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
-                                    From="#4854ac" To="White" Duration="0:0:0.15" AutoReverse="True" />
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger.Actions>
-                    </EventTrigger>
-                </Style.Triggers>
-            </Style>
+                <!-- Animates the button's opacity on mouse over. -->
+                <EventTrigger RoutedEvent="Button.MouseEnter">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                                Storyboard.TargetProperty="(Button.Opacity)"
+                                From="1.0" To="0.5" Duration="0:0:0.1"/>           
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
 
-            <!-- Custom Slider -->
+                <!-- Returns the button's opacity to 1 when the mouse leaves. -->
+                <EventTrigger RoutedEvent="Button.MouseLeave">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation
+                                Storyboard.TargetProperty="(Button.Opacity)"
+                                To="1" Duration="0:0:0.1" />  
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
 
-            <SolidColorBrush x:Key="SliderThumb.Static.Foreground" Color="#FFE5E5E5"/>
-            <SolidColorBrush x:Key="SliderThumb.MouseOver.Background" Color="#FFDCECFC"/>
-            <SolidColorBrush x:Key="SliderThumb.MouseOver.Border" Color="#FF7Eb4EA"/>
-            <SolidColorBrush x:Key="SliderThumb.Pressed.Background" Color="#FFDAECFC"/>
-            <SolidColorBrush x:Key="SliderThumb.Pressed.Border" Color="#FF569DE5"/>
-            <SolidColorBrush x:Key="SliderThumb.Disabled.Background" Color="#FFF0F0F0"/>
-            <SolidColorBrush x:Key="SliderThumb.Disabled.Border" Color="#FFD9D9D9"/>
-            <SolidColorBrush x:Key="SliderThumb.Static.Background" Color="#4854ac"/>
-            <SolidColorBrush x:Key="SliderThumb.Static.Border" Color="#FFACACAC"/>
+                <!-- Changes the button's color when clicked. 
+             Notice that the animation can't target the
+             SolidColorBrush used to paint the button's background
+             directly. The brush must be accessed through the button's
+             Background property. -->
+                <EventTrigger RoutedEvent="Button.Click">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation 
+                                Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"
+                                From="#4854ac" To="White" Duration="0:0:0.15" AutoReverse="True" />         
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!-- Custom Slider -->
 
-            <SolidColorBrush x:Key="SliderThumb.Track.Border" Color="#FFD6D6D6"/>
-            <SolidColorBrush x:Key="SliderThumb.Track.Background" Color="#FFE7EAEA"/>
-            <Style x:Key="RepeatButtonTransparent" TargetType="{x:Type RepeatButton}">
-                <Setter Property="OverridesDefaultStyle" Value="true"/>
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="Focusable" Value="false"/>
-                <Setter Property="IsTabStop" Value="false"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type RepeatButton}">
-                            <Border Background="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" CornerRadius="2,0,0,2"/>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <ControlTemplate x:Key="SliderThumbHorizontalDefault" TargetType="{x:Type Thumb}">
-                <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
-                    <Ellipse x:Name="grip" Fill="{StaticResource AccentGradient}" VerticalAlignment="Center" StrokeThickness="1" Width="10" Height="10"/>
+        <SolidColorBrush x:Key="SliderThumb.Static.Foreground" Color="#FFE5E5E5"/>
+        <SolidColorBrush x:Key="SliderThumb.MouseOver.Background" Color="#FFDCECFC"/>
+        <SolidColorBrush x:Key="SliderThumb.MouseOver.Border" Color="#FF7Eb4EA"/>
+        <SolidColorBrush x:Key="SliderThumb.Pressed.Background" Color="#FFDAECFC"/>
+        <SolidColorBrush x:Key="SliderThumb.Pressed.Border" Color="#FF569DE5"/>
+        <SolidColorBrush x:Key="SliderThumb.Disabled.Background" Color="#FFF0F0F0"/>
+        <SolidColorBrush x:Key="SliderThumb.Disabled.Border" Color="#FFD9D9D9"/>
+        <SolidColorBrush x:Key="SliderThumb.Static.Background" Color="#4854ac"/>
+        <SolidColorBrush x:Key="SliderThumb.Static.Border" Color="#FFACACAC"/>
+
+        <SolidColorBrush x:Key="SliderThumb.Track.Border" Color="#FFD6D6D6"/>
+        <SolidColorBrush x:Key="SliderThumb.Track.Background" Color="#FFE7EAEA"/>
+        <Style x:Key="RepeatButtonTransparent" TargetType="{x:Type RepeatButton}">
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Focusable" Value="false"/>
+            <Setter Property="IsTabStop" Value="false"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Border Background="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" CornerRadius="2,0,0,2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="SliderThumbHorizontalDefault" TargetType="{x:Type Thumb}">
+            <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
+                <Ellipse x:Name="grip" Fill="{StaticResource SliderThumb.Static.Background}" VerticalAlignment="Center" StrokeThickness="1" Width="10" Height="10"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.MouseOver.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.MouseOver.Border}"/>
+                </Trigger>
+                <Trigger Property="IsDragging" Value="true">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.Pressed.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.Pressed.Border}"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.Disabled.Background}"/>
+                    <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.Disabled.Border}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <ControlTemplate x:Key="SliderHorizontal" TargetType="{x:Type Slider}">
+            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TickBar x:Name="TopTick" Fill="{TemplateBinding Foreground}" Height="2" Margin="0,0,0,2" Placement="Top" Grid.Row="0" Visibility="Collapsed"/>
+                    <TickBar x:Name="BottomTick" Fill="{TemplateBinding Foreground}" Height="2" Margin="0,2,0,0" Placement="Bottom" Grid.Row="2" Visibility="Visible"/>
+                    <Border x:Name="TrackBackground" BorderBrush="{StaticResource SliderThumb.Track.Border}" BorderThickness="1" Background="{StaticResource SliderThumb.Track.Background}" Height="4.0" Margin="5,0" Grid.Row="1" VerticalAlignment="center" CornerRadius="2">
+                        <Canvas Margin="-6,-1">
+                            <Rectangle x:Name="PART_SelectionRange" Fill="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Height="4.0" Visibility="Hidden"/>
+                        </Canvas>
+                    </Border>
+                    <Border BorderThickness="1" Margin="4, 0" Grid.Row="1">
+                        <Track x:Name="PART_Track">
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Style="{StaticResource RepeatButtonTransparent}" Height="4" Background="{StaticResource SliderThumb.Static.Background}"/>
+                            </Track.DecreaseRepeatButton>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Style="{StaticResource RepeatButtonTransparent}"/>
+                            </Track.IncreaseRepeatButton>
+                            <Track.Thumb>
+                                <Thumb x:Name="Thumb" Focusable="False" Height="10" Width="10" OverridesDefaultStyle="True" Template="{StaticResource SliderThumbHorizontalDefault}" VerticalAlignment="Center"/>
+                            </Track.Thumb>
+                        </Track>
+                    </Border>
                 </Grid>
-                <ControlTemplate.Triggers>
-                    <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.MouseOver.Background}"/>
-                        <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.MouseOver.Border}"/>
-                    </Trigger>
-                    <Trigger Property="IsDragging" Value="true">
-                        <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.Pressed.Background}"/>
-                        <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.Pressed.Border}"/>
-                    </Trigger>
-                    <Trigger Property="IsEnabled" Value="false">
-                        <Setter Property="Fill" TargetName="grip" Value="{StaticResource SliderThumb.Disabled.Background}"/>
-                        <Setter Property="Stroke" TargetName="grip" Value="{StaticResource SliderThumb.Disabled.Border}"/>
-                    </Trigger>
-                </ControlTemplate.Triggers>
-            </ControlTemplate>
-            <ControlTemplate x:Key="SliderHorizontal" TargetType="{x:Type Slider}">
-                <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <TickBar x:Name="TopTick" Fill="{TemplateBinding Foreground}" Height="2" Margin="0,0,0,2" Placement="Top" Grid.Row="0" Visibility="Collapsed"/>
-                        <TickBar x:Name="BottomTick" Fill="{TemplateBinding Foreground}" Height="2" Margin="0,2,0,0" Placement="Bottom" Grid.Row="2" Visibility="Visible"/>
-                        <Border x:Name="TrackBackground" BorderBrush="{StaticResource SliderThumb.Track.Border}" BorderThickness="1" Background="{StaticResource SliderThumb.Track.Background}" Height="4.0" Margin="5,0" Grid.Row="1" VerticalAlignment="center" CornerRadius="2">
-                            <Canvas Margin="-6,-1">
-                                <Rectangle x:Name="PART_SelectionRange" Fill="{StaticResource AccentGradient}" Height="4.0" Visibility="Hidden"/>
-                            </Canvas>
-                        </Border>
-                        <Border BorderThickness="1" Margin="4, 0" Grid.Row="1">
-                            <Track x:Name="PART_Track">
-                                <Track.DecreaseRepeatButton>
-                                    <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Style="{StaticResource RepeatButtonTransparent}" Height="4" Background="{StaticResource AccentGradient}"/>
-                                </Track.DecreaseRepeatButton>
-                                <Track.IncreaseRepeatButton>
-                                    <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Style="{StaticResource RepeatButtonTransparent}"/>
-                                </Track.IncreaseRepeatButton>
-                                <Track.Thumb>
-                                    <Thumb x:Name="Thumb" Focusable="False" Height="10" Width="10" OverridesDefaultStyle="True" Template="{StaticResource SliderThumbHorizontalDefault}" VerticalAlignment="Center"/>
-                                </Track.Thumb>
-                            </Track>
-                        </Border>
-                    </Grid>
-                </Border>
-                <ControlTemplate.Triggers>
-                    <Trigger Property="TickPlacement" Value="Both">
-                        <Setter Property="Visibility" TargetName="TopTick" Value="Visible"/>
-                        <Setter Property="Visibility" TargetName="BottomTick" Value="Visible"/>
-                    </Trigger>
-                    <Trigger Property="IsSelectionRangeEnabled" Value="true">
-                        <Setter Property="Visibility" TargetName="PART_SelectionRange" Value="Visible"/>
-                    </Trigger>
-                    <Trigger Property="IsKeyboardFocused" Value="true">
-                        <Setter Property="Foreground" TargetName="Thumb" Value="Blue"/>
-                    </Trigger>
-                </ControlTemplate.Triggers>
-            </ControlTemplate>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="TickPlacement" Value="Both">
+                    <Setter Property="Visibility" TargetName="TopTick" Value="Visible"/>
+                    <Setter Property="Visibility" TargetName="BottomTick" Value="Visible"/>
+                </Trigger>
+                <Trigger Property="IsSelectionRangeEnabled" Value="true">
+                    <Setter Property="Visibility" TargetName="PART_SelectionRange" Value="Visible"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocused" Value="true">
+                    <Setter Property="Foreground" TargetName="Thumb" Value="Blue"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
 
-            <Style TargetType="{x:Type Slider}">
-                <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderBrush" Value="Transparent"/>
-                <Setter Property="Foreground" Value="{StaticResource SliderThumb.Static.Foreground}"/>
-                <Setter Property="Template" Value="{StaticResource SliderHorizontal}"/>
-            </Style>
-        </ResourceDictionary>
+        <Style TargetType="{x:Type Slider}">
+            <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource SliderThumb.Static.Foreground}"/>
+            <Setter Property="Template" Value="{StaticResource SliderHorizontal}"/>
+        </Style>
 
     </Application.Resources>
 </Application>
