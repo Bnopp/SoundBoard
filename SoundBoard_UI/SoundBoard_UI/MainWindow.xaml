@@ -56,7 +56,14 @@
 
                 <TextBlock Foreground="{StaticResource ForegroundColorLight}" FontSize="14" FontWeight="SemiBold">Playback Device</TextBlock>
 
-                <ComboBox x:Name="cbPlayback" Height="30" Style="{StaticResource ComboBoxRoundedCornersStyle}"/>
+                <ComboBox x:Name="cbPlayback" Height="30" Style="{StaticResource ComboBoxRoundedCornersStyle}">
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ComboBoxItem}">
+                            <Setter Property="Foreground" Value="{StaticResource ForegroundColorLight}"/>
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+
 
                 <!-- Set margin to 0,10,0,0 for textblock-->
                 <TextBlock Foreground="{StaticResource ForegroundColorLight}" FontSize="14" FontWeight="SemiBold" Grid.Row="0" Margin="0,10,0,0">Recording Device</TextBlock>
@@ -99,7 +106,7 @@
                 </Border>
             </StackPanel>
 
-            <Label Grid.Column="0" Grid.Row="1" Margin="20,0,0,10" Foreground="{StaticResource ForegroundColorLight}" FontSize="12" Content="Copyright © Serghei Diulgherov - BnoppSoftware. All rights reserved."/>
+            <Label Grid.Column="0" Grid.Row="1" Margin="20,0,0,10" Foreground="{StaticResource ForegroundColorLight}" FontSize="10" Content="Copyright © Serghei Diulgherov - BnoppSoftware. All rights reserved. v0.9.5.7"/>
 
             <StackPanel x:Name="spContainerRight" Grid.Column="1" Margin="20">
                 <DataGrid x:Name="dgSounds" IsReadOnly="True" Height="310"

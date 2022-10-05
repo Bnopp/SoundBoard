@@ -79,6 +79,11 @@
                                                         BorderBrush="{StaticResource BorderColorLight}"
                                                         Background="#FFFFFF"/>
                                         <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                            <ScrollViewer.Resources>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="Red"/>
+                                                </Style>
+                                            </ScrollViewer.Resources>
                                             <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
                                         </ScrollViewer>
                                     </Grid>

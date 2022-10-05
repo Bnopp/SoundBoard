@@ -8,7 +8,7 @@ using System.Windows;
 [assembly: AssemblyTitle("SoundBoard_UI")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Bnopp Software")]
 [assembly: AssemblyProduct("SoundBoard_UI")]
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
