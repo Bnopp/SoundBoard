@@ -106,7 +106,7 @@
                 </Border>
             </StackPanel>
 
-            <Label Grid.Column="0" Grid.Row="1" Margin="20,0,0,10" Foreground="{StaticResource ForegroundColorLight}" FontSize="10" Content="Copyright © Serghei Diulgherov - BnoppSoftware. All rights reserved. v0.9.5.7"/>
+            <Label Grid.Column="0" Grid.Row="1" Margin="20,0,0,10" Foreground="{StaticResource ForegroundColorLight}" FontSize="10" Content="Copyright © Serghei Diulgherov - BnoppSoftware. All rights reserved. v0.9.5.8"/>
 
             <StackPanel x:Name="spContainerRight" Grid.Column="1" Margin="20">
                 <DataGrid x:Name="dgSounds" IsReadOnly="True" Height="310"
