@@ -16,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Deployment.Application;
 using System.Xml.Linq;
 using Windows.ApplicationModel.VoiceCommands;
 using Windows.UI.Xaml.Controls;
@@ -53,6 +54,16 @@ namespace SoundBoard_UI
         public MainWindow()
         {
             InitializeComponent();
+
+            if (ApplicationDeployment.IsNetworkDeployed)
+            {
+                this.tbTitle.Text += ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+            }
+            else
+            {
+                var version = Assembly.GetEntryAssembly().GetName().Version;
+                this.tbTitle.Text += $" DevBuild v{version.Major}.{version.Minor}.{version.Build}.{version.Revision} preAlpha";
+            }
 
             // if default settings exist
             this.Settings = new Settings();
@@ -113,7 +124,6 @@ namespace SoundBoard_UI
             File.SetAttributes(saveDir + @"\preventFileDelete.tmp", FileAttributes.Hidden);
             _sr = File.OpenText(saveDir + @"\preventFileDelete.tmp");
 
-            HotkeyManager.Current.AddOrReplace("Starter", Key.D1, ModifierKeys.Control | ModifierKeys.Alt, StartOrStop);
         }
         #endregion
 
@@ -132,7 +142,7 @@ namespace SoundBoard_UI
                     Debug.WriteLine($"Sound found at postiton {index}: {(string)list[0]}");
                     dgSounds.SelectedIndex = index;
 
-                    CreateHotKey(new List<Key>() {(Key)list[1], (Key)list[2], (Key)list[3] }, index, true);
+                    CreateHotKey(new List<Key>() {convertToKey((ModifierKeys)list[1]), convertToKey((ModifierKeys)list[2]), (Key)list[3] }, index, true);
                     Debug.WriteLine($"Created HotKey for {(string)list[0]} - {(ModifierKeys)(int)list[1]}+{(ModifierKeys)(int)list[2]}+{(Key)(int)list[3]}");
                     dgSounds.Items.Refresh();
                 }
@@ -335,6 +345,23 @@ namespace SoundBoard_UI
                 return ModifierKeys.Alt;
             }
             return ModifierKeys.None;
+        }
+
+        public Key convertToKey(ModifierKeys nKey)
+        {
+            if (nKey == ModifierKeys.Control)
+            {
+                return Key.LeftCtrl;
+            }
+            else if (nKey == ModifierKeys.Shift)
+            {
+                return Key.LeftShift;
+            }
+            else if (nKey == ModifierKeys.Alt)
+            {
+                return Key.LeftAlt;
+            }
+            return Key.None;
         }
 
         #endregion

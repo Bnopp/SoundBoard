@@ -9,7 +9,7 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         Title="Manage Sound" Height="150" Width="350"
-        Background="#131d25"
+        Background="{StaticResource BackgroundColorLight}"
         Topmost="True"
         AllowsTransparency="True"
         Closed="Window_Closed"
@@ -17,35 +17,37 @@
     <Window.Clip>
         <RectangleGeometry Rect="0,0,350,150" RadiusX="10" RadiusY="10"/>
     </Window.Clip>
-    <DockPanel x:Name="RootWindow">
-        <DockPanel x:Name="TitleBar" DockPanel.Dock="Top" Background="#282f3a"  MouseDown="TitleBar_MouseDown">
-            <Button x:Name="CloseButton"
-                        Style="{StaticResource TitleButton}"
-                        Click="CloseButton_Click"
-                        DockPanel.Dock="Right"
-                        Margin="0,0,2,0">
-                <Ellipse x:Name="eClose" Width="10" Height="10" Fill="#f54e4e"/>
-            </Button>
+    <Border BorderBrush="{StaticResource BorderColorLight}" BorderThickness="2" CornerRadius="9">
+        <DockPanel x:Name="RootWindow">
+            <DockPanel x:Name="TitleBar" DockPanel.Dock="Top" Background="{StaticResource BorderColorLight}"  MouseDown="TitleBar_MouseDown">
+                <Button x:Name="CloseButton"
+                            Style="{StaticResource TitleButton}"
+                            Click="CloseButton_Click"
+                            DockPanel.Dock="Right"
+                            Margin="0,0,2,0">
+                    <Ellipse x:Name="eClose" Width="10" Height="10" Fill="#f54e4e"/>
+                </Button>
 
-            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" Margin="10,0,0,0">Manage Sound</TextBlock>
-        </DockPanel>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <StackPanel Margin="10, 10, 10, 0" Grid.Row="0">
-                <Label Content="Sound Name:" Foreground="#e8ecf1" MaxHeight="20" Padding="0"/>
-                <TextBox x:Name="tbSoundName" TextChanged="tbSoundName_TextChanged" GotFocus="tbSoundName_GotFocus" Grid.Row="0" Height="30" FontSize="15" VerticalContentAlignment="Center"  Background="#263365" BorderBrush="Transparent" Foreground="#e8ecf1"/>
-            </StackPanel>
-            <Grid Margin="10, 0, 10, 10" Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label x:Name="lblShortcut" Grid.Column="0" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center" Content="No Shortcut" Foreground="#e8ecf1"/>
-                <Button x:Name="btnShortcut" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource MainButton}" Click="btnShortcut_Click" Width="100" Content="Set Shortcut"/>
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{StaticResource ForegroundColorLight}" Margin="10,0,0,0">Manage Sound</TextBlock>
+            </DockPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Margin="10, 10, 10, 0" Grid.Row="0">
+                    <Label Content="Sound Name:" Foreground="{StaticResource ForegroundColorLight}" MaxHeight="20" Padding="0"/>
+                    <TextBox x:Name="tbSoundName" TextChanged="tbSoundName_TextChanged" GotFocus="tbSoundName_GotFocus" Grid.Row="0" Height="30" FontSize="15" VerticalContentAlignment="Center"  Background="{StaticResource BorderColorLight}" BorderBrush="Transparent" Foreground="{StaticResource ForegroundColorLight}"/>
+                </StackPanel>
+                <Grid Margin="10, 0, 10, 10" Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="lblShortcut" Grid.Column="0" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center" Content="No Shortcut" Foreground="{StaticResource ForegroundColorLight}"/>
+                    <Button x:Name="btnShortcut" Grid.Column="1" HorizontalAlignment="Right" Style="{DynamicResource MainButtonLight}" Click="btnShortcut_Click" Width="125" Content="Set Shortcut"/>
+                </Grid>
             </Grid>
-        </Grid>
-    </DockPanel>
+        </DockPanel>
+    </Border>
 </Window>

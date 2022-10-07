@@ -3,7 +3,7 @@
   <asmv1:assemblyIdentity name="SoundBoard_UI.exe" version="0.9.4.13" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="SoundBoard_UI" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="SoundBoard_UI" version="0.9.6.20595" language="neutral" processorArchitecture="msil" />
     <commandLine file="SoundBoard_UI.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -174,14 +174,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SoundBoard_UI.exe" size="54208">
-      <assemblyIdentity name="SoundBoard_UI" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="SoundBoard_UI.exe" size="55744">
+      <assemblyIdentity name="SoundBoard_UI" version="0.9.6.20595" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>DxcUmcAEuD1aHZ9asCl4po4VlouqGmKe8hyFfUJWukw=</dsig:DigestValue>
+        <dsig:DigestValue>sY4e5J5ffL0oXDFmE4X2aFCS2VG5M47E5GsSjtYyLDk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

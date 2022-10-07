@@ -16,100 +16,102 @@
     <Window.Clip>
         <RectangleGeometry Rect="0,0,850,415" RadiusX="10" RadiusY="10"/>
     </Window.Clip>
-    <DockPanel x:Name="RootWindow">
-        <DockPanel x:Name="TitleBar" DockPanel.Dock="Top" Background="{StaticResource BorderColorLight}"  MouseDown="TitleBar_MouseDown">
-            <Button x:Name="CloseButton"
+    <Border BorderBrush="{StaticResource BorderColorLight}" BorderThickness="2" CornerRadius="9">
+
+        <DockPanel x:Name="RootWindow">
+            <DockPanel x:Name="TitleBar" DockPanel.Dock="Top" Background="{StaticResource BorderColorLight}"  MouseDown="TitleBar_MouseDown">
+                <Button x:Name="CloseButton"
                     Style="{StaticResource TitleButton}"
                     Click="CloseButton_Click"
                     DockPanel.Dock="Right"
                     Margin="0,0,2,0">
-                <Ellipse x:Name="eClose" Width="10" Height="10" Fill="#f54e4e"/>
-            </Button>
-            <Button x:Name="MinButton"
+                    <Ellipse x:Name="eClose" Width="10" Height="10" Fill="#f54e4e"/>
+                </Button>
+                <Button x:Name="MinButton"
                     Style="{StaticResource TitleButton}"
                     Click="MinimizeButton_Click"
                     DockPanel.Dock="Right">
-                <Ellipse x:Name="eMinimize" Width="10" Height="10" Fill="#f5c34e"/>
-            </Button>
+                    <Ellipse x:Name="eMinimize" Width="10" Height="10" Fill="#f5c34e"/>
+                </Button>
 
-            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{StaticResource ForegroundColorLight}" Margin="20,0,0,0">SoundBoard</TextBlock>
-        </DockPanel>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <StackPanel x:Name="spContainerLeft" Margin="20">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Margin" Value="0, 0, 0, 10"/>
-                        <Setter Property="Foreground" Value="#e8ecf1"/>
-                    </Style>
-                    <Style TargetType="{x:Type ComboBoxItem}">
-                        <Setter Property="Foreground" Value="#e8ecf1"/>
-                    </Style>
-                </StackPanel.Resources>
-
-                <TextBlock Foreground="{StaticResource ForegroundColorLight}" FontSize="14" FontWeight="SemiBold">Playback Device</TextBlock>
-
-                <ComboBox x:Name="cbPlayback" Height="30" Style="{StaticResource ComboBoxRoundedCornersStyle}">
-                    <ComboBox.ItemContainerStyle>
+                <TextBlock x:Name="tbTitle" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{StaticResource ForegroundColorLight}" Margin="20,0,0,0">SoundBoard</TextBlock>
+            </DockPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel x:Name="spContainerLeft" Margin="20">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Margin" Value="0, 0, 0, 10"/>
+                            <Setter Property="Foreground" Value="#e8ecf1"/>
+                        </Style>
                         <Style TargetType="{x:Type ComboBoxItem}">
-                            <Setter Property="Foreground" Value="{StaticResource ForegroundColorLight}"/>
+                            <Setter Property="Foreground" Value="#e8ecf1"/>
                         </Style>
-                    </ComboBox.ItemContainerStyle>
-                </ComboBox>
+                    </StackPanel.Resources>
+
+                    <TextBlock Foreground="{StaticResource ForegroundColorLight}" FontSize="14" FontWeight="SemiBold">Playback Device</TextBlock>
+
+                    <ComboBox x:Name="cbPlayback" Height="30" Style="{StaticResource ComboBoxRoundedCornersStyle}">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ComboBoxItem}">
+                                <Setter Property="Foreground" Value="{StaticResource ForegroundColorLight}"/>
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
 
 
-                <!-- Set margin to 0,10,0,0 for textblock-->
-                <TextBlock Foreground="{StaticResource ForegroundColorLight}" FontSize="14" FontWeight="SemiBold" Grid.Row="0" Margin="0,10,0,0">Recording Device</TextBlock>
-                <ComboBox Grid.Row="1" x:Name="cbRecording" Height="30" Margin="0, 10, 0, 0" Style="{StaticResource ComboBoxRoundedCornersStyle}"/>
+                    <!-- Set margin to 0,10,0,0 for textblock-->
+                    <TextBlock Foreground="{StaticResource ForegroundColorLight}" FontSize="14" FontWeight="SemiBold" Grid.Row="0" Margin="0,10,0,0">Recording Device</TextBlock>
+                    <ComboBox Grid.Row="1" x:Name="cbRecording" Height="30" Margin="0, 10, 0, 0" Style="{StaticResource ComboBoxRoundedCornersStyle}"/>
 
-                <Grid x:Name="spAudioButtonsContainer" Margin="0, 10, 0, 0" >
-                    <Grid.Resources>
-                        <Style TargetType="{x:Type Button}">
-                            <Setter Property="Padding" Value="10"/>
-                        </Style>
-                    </Grid.Resources>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="35"/>
-                    </Grid.RowDefinitions>
-                    <Canvas Grid.Column="0">
-                        <Button x:Name="btnRecordingStart" Style="{DynamicResource MainButtonLight}" Click="btnRecordingStart_Click" Content="Start"/>
-                    </Canvas>
-                    <Canvas Grid.Column="1">
-                        <Button x:Name="btnRecordingSave" Style="{StaticResource MainButtonLight}" Background="{StaticResource ReverseAccentGradient}" Click="btnRecordingSave_Click" Content="Save" Margin="10,0,10,0"/>
-                    </Canvas>
-                    <Canvas Grid.Column="2">
-                        <Button x:Name="btnSoundPlay" Style="{StaticResource MainButtonLight}" Click="btnSoundPlay_Click" Content="Play" Margin="20,0,0,0" />
-                    </Canvas>    
-                    <Label HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" x:Name="lblSaveTime" Padding="0" Content="5 sec" FontWeight="DemiBold" FontSize="14" Foreground="{StaticResource ForegroundColorLight}" Grid.Column="3"/>
-                </Grid>
+                    <Grid x:Name="spAudioButtonsContainer" Margin="0, 10, 0, 0" >
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type Button}">
+                                <Setter Property="Padding" Value="10"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35"/>
+                        </Grid.RowDefinitions>
+                        <Canvas Grid.Column="0">
+                            <Button x:Name="btnRecordingStart" Style="{DynamicResource MainButtonLight}" Click="btnRecordingStart_Click" Content="Start"/>
+                        </Canvas>
+                        <Canvas Grid.Column="1">
+                            <Button x:Name="btnRecordingSave" Style="{StaticResource MainButtonLight}" Background="{StaticResource ReverseAccentGradient}" Click="btnRecordingSave_Click" Content="Save" Margin="10,0,10,0"/>
+                        </Canvas>
+                        <Canvas Grid.Column="2">
+                            <Button x:Name="btnSoundPlay" Style="{StaticResource MainButtonLight}" Click="btnSoundPlay_Click" Content="Play" Margin="20,0,0,0" />
+                        </Canvas>
+                        <Label HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" x:Name="lblSaveTime" Padding="0" Content="5 sec" FontWeight="DemiBold" FontSize="14" Foreground="{StaticResource ForegroundColorLight}" Grid.Column="3"/>
+                    </Grid>
 
-                <Slider x:Name="sTimeToSave" IsSnapToTickEnabled="True" TickFrequency="5" Minimum="5" Maximum="100" Margin="0,10,0,0" Value="5" ValueChanged="sTimeToSave_ValueChanged"/>
+                    <Slider x:Name="sTimeToSave" IsSnapToTickEnabled="True" TickFrequency="5" Minimum="5" Maximum="100" Margin="0,10,0,0" Value="5" ValueChanged="sTimeToSave_ValueChanged"/>
 
-                <Border Background="#FFFFFF" BorderBrush="{StaticResource BorderColorLight}" CornerRadius="5" BorderThickness="1" Margin="0,10,0,0">
-                    <Border.Effect>
-                        <DropShadowEffect Color="DarkGray" Direction="-55" Opacity="0.3" BlurRadius="15" ShadowDepth="5" />
-                    </Border.Effect>
-                    <Canvas x:Name="cVisualiser" Height="100"/>
-                </Border>
-            </StackPanel>
+                    <Border Background="#FFFFFF" BorderBrush="{StaticResource BorderColorLight}" CornerRadius="5" BorderThickness="1" Margin="0,10,0,0">
+                        <Border.Effect>
+                            <DropShadowEffect Color="DarkGray" Direction="-55" Opacity="0.3" BlurRadius="15" ShadowDepth="5" />
+                        </Border.Effect>
+                        <Canvas x:Name="cVisualiser" Height="100"/>
+                    </Border>
+                </StackPanel>
 
-            <Label Grid.Column="0" Grid.Row="1" Margin="20,0,0,10" Foreground="{StaticResource ForegroundColorLight}" FontSize="10" Content="Copyright © Serghei Diulgherov - BnoppSoftware. All rights reserved. v0.9.5.8"/>
+                <Label x:Name="lblCopyRight" Grid.Column="0" Grid.Row="1" Margin="20,0,0,10" Foreground="{StaticResource ForegroundColorLight}" FontSize="10" Content="Copyright © Serghei Diulgherov - BnoppSoftware. All rights reserved. "/>
 
-            <StackPanel x:Name="spContainerRight" Grid.Column="1" Margin="20">
-                <DataGrid x:Name="dgSounds" IsReadOnly="True" Height="310"
+                <StackPanel x:Name="spContainerRight" Grid.Column="1" Margin="20">
+                    <DataGrid x:Name="dgSounds" IsReadOnly="True" Height="310"
                       CanUserResizeColumns="False" 
                       CanUserResizeRows="False" 
                       CanUserReorderColumns="False" 
@@ -120,13 +122,14 @@
                       HorizontalScrollBarVisibility="Disabled"
                       VerticalScrollBarVisibility="Visible"
                       SelectionUnit="FullRow">
-                    <DataGrid.Resources>
-                        <Style TargetType="DataGrid">
-                            <EventSetter Event="MouseDoubleClick" Handler="GridDouble_Click"/>
-                        </Style>
-                    </DataGrid.Resources>
-                </DataGrid>
-            </StackPanel>
-        </Grid>
-    </DockPanel>
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGrid">
+                                <EventSetter Event="MouseDoubleClick" Handler="GridDouble_Click"/>
+                            </Style>
+                        </DataGrid.Resources>
+                    </DataGrid>
+                </StackPanel>
+            </Grid>
+        </DockPanel>
+    </Border>
 </Window>
