@@ -27,7 +27,9 @@ using Windows.Media.Core;
 using System.Drawing;
 using System.Windows.Media.Imaging;
 using Rectangle = System.Windows.Shapes.Rectangle;
-using Color = System.Windows.Media.Color;
+using Color = System.Drawing.Color;
+using NAudio.Utils;
+using System.Threading.Tasks;
 
 namespace SoundBoard_UI
 {
@@ -389,6 +391,29 @@ namespace SoundBoard_UI
             return Key.None;
         }
 
+
+        private void GetPlayTime(WaveOut wo, WaveFileReader wfr, double skip)
+        {
+            Debug.WriteLine(wfr.TotalTime);
+            Debug.WriteLine(skip);
+
+            var playtime = wo.GetPositionTimeSpan().TotalMilliseconds / wfr.TotalTime.TotalMilliseconds * 100;
+            while (wo.PlaybackState == PlaybackState.Playing && Math.Round(playtime,0) <= 100)
+            {
+                playtime = wo.GetPositionTimeSpan().TotalMilliseconds / wfr.TotalTime.TotalMilliseconds * 100;
+                UpdatePlayerTime(playtime + skip);
+            }
+
+            UpdatePlayerTime(skip);
+                
+        }
+
+        private void UpdatePlayerTime(double time)
+        {
+            Action action = () => sPlayer.Value = time;
+            Dispatcher.Invoke(action);
+        }
+
         #endregion
 
         #region Window Control
@@ -499,8 +524,21 @@ namespace SoundBoard_UI
             {
                 waveFileReader = new WaveFileReader(System.IO.Path.GetFullPath(lsSounds[dgSounds.SelectedIndex].Path));
                 waveOut.DeviceNumber = cbPlayback.SelectedIndex;
+                // Calculate new position
+                var skipTime = sPlayer.Value / 100 * waveFileReader.TotalTime.Seconds;
+                var skipPlayer = sPlayer.Value;
+                Debug.WriteLine($"skiptime {skipPlayer}");
+                long newPos = waveFileReader.Position + (long)(waveFileReader.WaveFormat.AverageBytesPerSecond * skipTime);
+                // Force it to align to a block boundary
+                if ((newPos % waveFileReader.WaveFormat.BlockAlign) != 0)
+                    newPos -= newPos % waveFileReader.WaveFormat.BlockAlign;
+                // Force new position into valid range
+                newPos = Math.Max(0, Math.Min(waveFileReader.Length, newPos));
+                // set position
+                waveFileReader.Position = newPos;
                 waveOut.Init(waveFileReader);
                 waveOut.Play();
+                Task.Run(() => GetPlayTime(waveOut, waveFileReader, skipPlayer));
                 Debug.WriteLine("Playing " + dgSounds.SelectedIndex);
             }
         }
@@ -630,7 +668,7 @@ namespace SoundBoard_UI
 
             for (int i = 1; i < Math.Pow(2, M) / 2; i++)
             {
-                Rectangle rect = new Rectangle { Fill = new SolidColorBrush(Color.FromRgb(253, 133, 74)), Width = size, Height = Math.Abs(values[i].X) * (cVisualiser.ActualHeight / 2) * 5, RadiusY = 5, RadiusX = 5 };
+                Rectangle rect = new Rectangle { Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(253, 133, 74)), Width = size, Height = Math.Abs(values[i].X) * (cVisualiser.ActualHeight / 2) * 5, RadiusY = 5, RadiusX = 5 };
                 rect.SetValue(Canvas.LeftProperty, Convert.ToDouble((i - 1) * size));
                 rect.SetValue(Canvas.TopProperty, cVisualiser.Height);
                 ScaleTransform stInvert = new ScaleTransform(1, -1);
@@ -655,6 +693,9 @@ namespace SoundBoard_UI
                 waveOut.DeviceNumber = cbPlayback.SelectedIndex;
                 waveOut.Init(waveFileReader);
                 waveOut.Play();
+
+                Task.Run(() => GetPlayTime(waveOut, waveFileReader, 0));
+
                 Debug.WriteLine("Playing " + e.Name);
             }
         }
@@ -679,16 +720,31 @@ namespace SoundBoard_UI
 
         private void dgSounds_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
-            waveFormRenderer = new WaveFormRenderer();
-            SoundCloudOriginalSettings sc = new SoundCloudOriginalSettings();
-            var settings = (WaveFormRendererSettings)sc;
-            settings.TopHeight = 75;
-            settings.BottomHeight = 50;
-            settings.Width = 800;
-            using (var waveStream = new AudioFileReader(System.IO.Path.GetFullPath(lsSounds[dgSounds.SelectedIndex].Path)))
+            if (dgSounds.SelectedIndex != -1)
             {
-                System.Drawing.Image img = waveFormRenderer.Render(waveStream, settings);
-                imgWave.Source = BitmapToImageSource(new Bitmap(img));
+                waveFormRenderer = new WaveFormRenderer();
+                var topSpacerColor = Color.FromArgb(64, 83, 22, 3);
+                SoundCloudBlockWaveFormSettings sc = new SoundCloudBlockWaveFormSettings(Color.FromArgb(196, 255, 5, 255), topSpacerColor, Color.FromArgb(196, 255, 96, 44),
+                    Color.FromArgb(64, 255, 5, 255))
+                {
+                    Name = "SoundCloud Orange Transparent Blocks",
+                    PixelsPerPeak = 5,
+                    SpacerPixels = 1,
+                    TopSpacerGradientStartColor = topSpacerColor,
+                    BackgroundColor = Color.White
+                };
+                var settings = (WaveFormRendererSettings)sc;
+                settings.TopHeight = 50;
+                settings.BottomHeight = 15;
+                settings.Width = 820;
+                settings.DecibelScale = false;
+                using (var waveStream = new AudioFileReader(System.IO.Path.GetFullPath(lsSounds[dgSounds.SelectedIndex].Path)))
+                {
+                    System.Drawing.Image img = waveFormRenderer.Render(waveStream, settings);
+                    imgWave.Source = BitmapToImageSource(new Bitmap(img));
+                }
+
+                sPlayer.Value = 0;
             }
         }
     }
