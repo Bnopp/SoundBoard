@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "GAG80P8dGOpVxEmWUq1NeBCqsW0vC2vIvssNK9Sh8bKFc/UX6NWMt5a3l/nrnFF7sS9tKRY4/eEI2TVF3MvC2w==",
+  "dgSpecHash": "bPQm2UrGnBXcbWdFLtMYvEb8mOccldKr62INy8fx2plKTw1Dx6fRf7lRcDNH5NST99+BDQ3dMVlSA9oSHtTtnA==",
   "success": true,
   "projectFilePath": "C:\\Users\\pl03jlu\\Documents\\GitHub\\SoundBoard\\SoundBoard_UI\\SoundBoard_UI\\SoundBoard_UI.csproj",
   "expectedPackageFiles": [
@@ -14,10 +14,12 @@
     "C:\\Users\\pl03jlu\\.nuget\\packages\\naudio.core\\2.1.0\\naudio.core.2.1.0.nupkg.sha512",
     "C:\\Users\\pl03jlu\\.nuget\\packages\\naudio.midi\\2.1.0\\naudio.midi.2.1.0.nupkg.sha512",
     "C:\\Users\\pl03jlu\\.nuget\\packages\\naudio.wasapi\\2.1.0\\naudio.wasapi.2.1.0.nupkg.sha512",
+    "C:\\Users\\pl03jlu\\.nuget\\packages\\naudio.waveformrenderer\\2.0.0\\naudio.waveformrenderer.2.0.0.nupkg.sha512",
     "C:\\Users\\pl03jlu\\.nuget\\packages\\naudio.winforms\\2.1.0\\naudio.winforms.2.1.0.nupkg.sha512",
     "C:\\Users\\pl03jlu\\.nuget\\packages\\naudio.winmm\\2.1.0\\naudio.winmm.2.1.0.nupkg.sha512",
     "C:\\Users\\pl03jlu\\.nuget\\packages\\nhotkey\\2.1.0\\nhotkey.2.1.0.nupkg.sha512",
     "C:\\Users\\pl03jlu\\.nuget\\packages\\nhotkey.wpf\\2.1.0\\nhotkey.wpf.2.1.0.nupkg.sha512",
+    "C:\\Users\\pl03jlu\\.nuget\\packages\\system.drawing.common\\5.0.1\\system.drawing.common.5.0.1.nupkg.sha512",
     "C:\\Users\\pl03jlu\\.nuget\\packages\\system.runtime.interopservices.windowsruntime\\4.3.0\\system.runtime.interopservices.windowsruntime.4.3.0.nupkg.sha512",
     "C:\\Users\\pl03jlu\\.nuget\\packages\\system.runtime.windowsruntime\\4.7.0\\system.runtime.windowsruntime.4.7.0.nupkg.sha512",
     "C:\\Users\\pl03jlu\\.nuget\\packages\\system.runtime.windowsruntime.ui.xaml\\4.7.0\\system.runtime.windowsruntime.ui.xaml.4.7.0.nupkg.sha512",

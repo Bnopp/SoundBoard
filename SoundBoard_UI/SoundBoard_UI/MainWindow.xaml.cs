@@ -1,6 +1,7 @@
 ﻿using Microsoft.Toolkit.Uwp.Notifications;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
+using NAudio.WaveFormRenderer;
 using NHotkey;
 using NHotkey.Wpf;
 using System;
@@ -21,6 +22,12 @@ using System.Xml.Linq;
 using Windows.ApplicationModel.VoiceCommands;
 using Windows.UI.Xaml.Controls;
 using Canvas = System.Windows.Controls.Canvas;
+using SoundBoard_UI.Properties;
+using Windows.Media.Core;
+using System.Drawing;
+using System.Windows.Media.Imaging;
+using Rectangle = System.Windows.Shapes.Rectangle;
+using Color = System.Windows.Media.Color;
 
 namespace SoundBoard_UI
 {
@@ -44,6 +51,8 @@ namespace SoundBoard_UI
         private AudioRecorder recorder;
         private WaveOut waveOut;
         private WaveFileReader waveFileReader;
+        private WaveFormRenderer waveFormRenderer;
+        private  WaveFormRendererSettings waveStandardSettings;
         private string saveDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Soundboard\Sounds";
 
         private int M = 7;
@@ -124,10 +133,28 @@ namespace SoundBoard_UI
             File.SetAttributes(saveDir + @"\preventFileDelete.tmp", FileAttributes.Hidden);
             _sr = File.OpenText(saveDir + @"\preventFileDelete.tmp");
 
+            if (dgSounds.SelectedIndex != -1)
+                dgSounds.SelectedIndex = 0;
         }
         #endregion
 
         #region Methods
+
+        BitmapImage BitmapToImageSource(Bitmap bitmap)
+        {
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+                memory.Position = 0;
+                BitmapImage bitmapimage = new BitmapImage();
+                bitmapimage.BeginInit();
+                bitmapimage.StreamSource = memory;
+                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapimage.EndInit();
+
+                return bitmapimage;
+            }
+        }
 
         /// <summary>
         /// Loads saved settings
@@ -195,8 +222,6 @@ namespace SoundBoard_UI
         /// </summary>
         public void LoadAudioDevices()
         {
-            
-
             foreach (KeyValuePair<string, MMDevice> device in GetInputAudioDevices())
             {
                 //Debug.WriteLine("Input Name: {0}, State: {1}", device.Key, device.Value.State);
@@ -651,5 +676,20 @@ namespace SoundBoard_UI
         }
 
         #endregion
+
+        private void dgSounds_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            waveFormRenderer = new WaveFormRenderer();
+            SoundCloudOriginalSettings sc = new SoundCloudOriginalSettings();
+            var settings = (WaveFormRendererSettings)sc;
+            settings.TopHeight = 75;
+            settings.BottomHeight = 50;
+            settings.Width = 800;
+            using (var waveStream = new AudioFileReader(System.IO.Path.GetFullPath(lsSounds[dgSounds.SelectedIndex].Path)))
+            {
+                System.Drawing.Image img = waveFormRenderer.Render(waveStream, settings);
+                imgWave.Source = BitmapToImageSource(new Bitmap(img));
+            }
+        }
     }
 }
