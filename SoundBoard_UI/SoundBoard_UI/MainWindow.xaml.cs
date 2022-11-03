@@ -68,7 +68,7 @@ namespace SoundBoard_UI
 
             if (ApplicationDeployment.IsNetworkDeployed)
             {
-                this.tbTitle.Text += ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+                this.tbTitle.Text += " v" + ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
             }
             else
             {
