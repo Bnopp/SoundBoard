@@ -736,7 +736,7 @@ namespace SoundBoard_UI
                 var settings = (WaveFormRendererSettings)sc;
                 settings.TopHeight = 50;
                 settings.BottomHeight = 15;
-                settings.Width = 820;
+                settings.Width = 800;
                 settings.DecibelScale = false;
                 using (var waveStream = new AudioFileReader(System.IO.Path.GetFullPath(lsSounds[dgSounds.SelectedIndex].Path)))
                 {

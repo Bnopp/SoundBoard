@@ -81,3 +81,10 @@ C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Deb
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.csproj.SuggestedBindingRedirects.cache
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\NAudio.WaveFormRenderer.dll
 C:\Users\pl03jlu\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\System.Drawing.Common.dll
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\SoundBoard_UI.exe.manifest
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\SoundBoard_UI.application
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\NAudio.WaveFormRenderer.dll
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\bin\Debug\System.Drawing.Common.dll
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.TrustInfo.xml
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.exe.manifest
+C:\Users\sergh\Documents\GitHub\SoundBoard\SoundBoard_UI\SoundBoard_UI\obj\Debug\SoundBoard_UI.application
